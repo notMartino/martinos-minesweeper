@@ -1,1 +1,116 @@
-{\rtf1}
+/* Proprietà generali */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    background-color: aqua;
+    background-image: url('../img/xp-bg.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    overflow: hidden;
+}
+main{
+    display: flex;
+    height: calc(100vh - 50px);
+}
+ul{
+    list-style-type: none;
+}
+
+/* Proprietà main*/
+/* Logo Windows XP */
+img#logo{
+    width: 250px;
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    z-index: -1;
+}
+
+/* Sezione game */
+#game{
+    font-family: 'Exo 2', sans-serif;
+    /* width: 50%; */
+    /* width: 606px; */
+    /* height: 700px; */
+    /* height: 80%; */
+    background-color: white;
+    margin: auto;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border: 3px solid #245edc;
+    border-top-width: 0;
+    overflow: hidden;
+    background-color: pink;
+}
+
+.window-nav{
+    height: 30px;
+    background: linear-gradient(to bottom, #3168d5 2%, #3888e9 4%, #4993e6 6%, #307be5 8%, #286add 5%, #245dd7 10%, #245edc 100%);
+}
+
+/* Lista quadrati */
+ul#matrix{
+    /* width: 100%; */
+    width: 680px;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    margin: 0 auto;
+    padding: 10px;
+}
+#matrix .cell{
+    flex-basis: calc(100% / 30);
+    height: 22px;
+    background-color: #c0c0c0;
+    border: 1px solid #808080;
+    position: relative;
+    text-align: center;
+}
+.cell .bomb{
+    width: 100%;
+}
+.cell .bomb.active {
+    background-color: red;
+}
+.cell .bomb + .cover{
+    display: none;
+}
+
+#matrix .cell .cover{
+    width: 100%;
+    height: 100%;
+    border: 3px solid #ffffff;
+    border-right-color: #808080;
+    border-bottom-color: #808080;
+    background-color: #c0c0c0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    margin: 0;
+    padding: 0;
+}
+
+.cell span{
+    font-weight: 900;
+    /* display: inline-block; */
+    width: 100%;
+}
+
+.blue{
+    color: blue;
+}
+
+/* Footer */
+.footer-nav{
+    background: linear-gradient(to bottom, #3168d5 2%, #3888e9 4%, #4993e6 6%, #307be5 8%, #286add 5%, #245dd7 10%, #245edc 100%);
+    height: 50px;
+    /* border-top: 3px solid #4f87c2; */
+}
