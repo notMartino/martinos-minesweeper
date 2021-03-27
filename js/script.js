@@ -4,7 +4,7 @@ function cellCreator(bombs){
     let gameWindowList = '';
 
     for (let i = 0; i < (25 * 30); i++) {
-        if (bombs.includes(i + 1)) {
+        if (bombs.includes(i)) {
             gameWindowList = gameWindowList + '<li class="cell" data-pos="' + (i) +'" data-bomb="1"><img class="bomb" src="img/mine.png" alt=""><div class="cover"></div></li>';
         }else{
             gameWindowList = gameWindowList + '<li class="cell" data-pos="' + (i) +'"><div class="cover"></div></li>';
@@ -15,12 +15,17 @@ function cellCreator(bombs){
 
 // Funzione creatore bombe
 function bombCreator(){
-    let min = 1;
-    let max = 750 - min + 1;
+    let min = 0;
+    let max = 749 - min + 1;
     let rndBombs = [];
-    for (let i = 0; i < 100; i++) {
+
+    let i = 0;
+    while(i< 100) {
         let rnd = Math.floor(Math.random ()* max) + min;
-        rndBombs[i] = rnd;
+        if (rndBombs.includes(rnd) == false) {
+            rndBombs[i] = rnd;
+            i++;
+        }
     }
     rndBombs.sort(function(a, b){return a-b});
     console.log('Bombs: ');
@@ -53,8 +58,10 @@ function nearBomb(bombs) {
             let posY = '';
             let posX = '';
             let posNum = -1;
-
-            for (let j = 0; j <749; j++) {
+            for (let j = 0; j <750; j++) {
+                // if (bombCounter >= 100) {
+                //     break;
+                // }
                 let bomb = $(cells[j]);
                 if (bomb.data('bomb') == 1) {
                     posNum = bomb.data('pos');
@@ -63,6 +70,8 @@ function nearBomb(bombs) {
                     bombCounter ++;
                 }
             }
+                
+            // }
             
             // if (bombs.includes(j + cellsNumb + 1)) {
             // if () {
@@ -125,8 +134,10 @@ function bombCount(pos, posNum) {
                     let cellLi = $(cellList[posNum]);
                     console.log(cellLi);
                     console.log('POS prima:' + posNum);
+                    
                     if(posNum >= 0 && posNum <= 749){
                         let pos2 = posNum + 1;
+                        let pos3 = posNum + 2
                         if ((pos2 % 30 == 0) && j == 1) {
                             console.log('WABAAAAAAAAAAAAA');
                             j = 3;
@@ -135,6 +146,10 @@ function bombCount(pos, posNum) {
                             console.log('UMSSSSSSSDDADS222222');
                             posNum++;
                             continue;
+                        }
+                        else if(posNum == 0 && j == 2){
+                            posNum++;
+                            break;
                         }
                         let num = 0;
                         let textHTML = cellLi.html();
