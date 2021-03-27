@@ -96,6 +96,7 @@ ul#matrix{
     z-index: 100;
     margin: 0;
     padding: 0;
+    display: none;
 }
 
 .cell span{
@@ -106,6 +107,15 @@ ul#matrix{
 
 .blue{
     color: blue;
+}
+.green{
+    color: green;
+}
+.red{
+    color: red;
+}
+.dark{
+    color:fuchsia;
 }
 
 /* Footer */

@@ -54,7 +54,7 @@ function nearBomb(bombs) {
             let posX = '';
             let posNum = -1;
 
-            for (let j = 31; j <40; j++) {
+            for (let j = 0; j <749; j++) {
                 let bomb = $(cells[j]);
                 if (bomb.data('bomb') == 1) {
                     posNum = bomb.data('pos');
@@ -118,62 +118,57 @@ function bombCount(pos, posNum) {
             console.log('BOTTOM RIGHT');
             break;
         default:
-            console.log('POSIZIONE ' + posNum);
             let cellList = $('.cell');
             posNum -= 31;
-            console.log('DEFAULT CASE');
             for (let i = 0; i < 3; i++) {
-                // let isBomb = $(cellList[posNum -1]).hasData('bomb');
-                // console.log(isBomb);
                 for (let j = 0; j < 3; j++) {
-                    let num = 0;
-                    // console.log(posNum);
-                    
-                    console.log('Nuova POS:' +posNum);
                     let cellLi = $(cellList[posNum]);
-                    let text = cellLi.html();
-
-                    let isValue = parseInt(cellLi.text());
-                    console.log('IS VALUE: ' + isValue);
-                    console.log('HA BOMBA ' + cellLi.data('bomb'));
-                    if (isNaN(isValue) && cellLi.data('bomb') != 1) {
-                        console.log('ENTRA');
-                        console.log('TEXT HTML: ' + text);
-                        num = num + 1;
-                        cellLi.html(text + '<span class="blue">' + num + '</span>')
-                        console.log('NUOVO HTML: ' + cellLi.html());
+                    console.log(cellLi);
+                    console.log('POS prima:' + posNum);
+                    if(posNum >= 0 && posNum <= 749){
+                        let pos2 = posNum + 1;
+                        if ((pos2 % 30 == 0) && j == 1) {
+                            console.log('WABAAAAAAAAAAAAA');
+                            j = 3;
+                            posNum++;
+                        } else if ((pos2 % 30 == 0) && j == 0) {
+                            console.log('UMSSSSSSSDDADS222222');
+                            posNum++;
+                            continue;
+                        }
+                        let num = 0;
+                        let textHTML = cellLi.html();
+                        let isValue = parseInt(cellLi.text());
+                        
+                        console.log('IS VALUE: ' + isValue);
+                        console.log('HA BOMBA ' + cellLi.data('bomb'));
+                        if (isNaN(isValue) && cellLi.data('bomb') != 1) {
+                            num = num + 1;
+                            cellLi.html(textHTML + '<span class="blue">' + num + '</span>')
+                        }
+                        else if(isNaN(isValue) == false && cellLi.data('bomb') != 1){
+                            console.log(isValue);
+                            num = isValue + 1;
+                            if (num == 2) {
+                                cellLi.html(textHTML + '<span class="green">' + num + '</span>');
+                                cellLi.children('.blue').remove(); 
+                            }else if(num == 3){
+                                cellLi.html(textHTML + '<span class="red">' + num + '</span>');
+                                cellLi.children('.green').remove(); 
+                            }else if(num == 4){
+                                cellLi.html(textHTML + '<span class="dark">' + num + '</span>');
+                                cellLi.children('.red').remove(); 
+                            }else{
+                                cellLi.html(textHTML + '<span class="dark">' + num + '</span>');
+                                cellLi.children('.dark:first-of-type').remove(); 
+                            }
+                        }
                     }
-                    else if(isNaN(isValue) == false && cellLi.data('bomb') != 1){
-                        console.log('ENTRA2');
-                        num = isValue + 1;
-                        console.log(num);
-                        console.log(cellLi.html(text + '<span>' + num <'</span>'));
-                    }
-
-                        // $(cellList[posNum - 1]).data('bomb') != "1"
-                    // }
-                    
-                    // if (){
-                       
-                    // }
-                    // $(cellList[posNum]).text()
                     posNum++;
                 }   
                 posNum = (posNum - 3) + 30;
-            // for (let i = posizioneStart; i < posizioneStart + 3; i++) {
-                
-            //     // console.log(cellList);
-            //     // if (cellList == 1) {
-                    
-            //     // }
-            //     // console.log(cellpos);
-            //     // if (condition) {
-                    
-            //     // }
-            // }
-            // console.log(celldata);
             }
-        
+            break;
     }
 }
 
