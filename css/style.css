@@ -5,57 +5,172 @@
     box-sizing: border-box;
 }
 body{
-    background-color: aqua;
     background-image: url('../img/xp-bg.jpg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     height: 100vh;
-    overflow: hidden;
+    overflow-x: hidden;
 }
-main{
-    display: flex;
-    height: calc(100vh - 50px);
+@font-face {
+    font-family: Alarm;
+    src: url(../font/TickingTimebombBB.ttf);
 }
 ul{
     list-style-type: none;
 }
+a{
+    text-decoration: none;
+}
 
 /* Proprietà main*/
+main{
+    display: flex;
+    height: calc(100vh - 45px);
+    overflow-x: hidden;
+    overflow-y: auto;
+}
 /* Logo Windows XP */
 img#logo{
     width: 250px;
     position: absolute;
     top: 30px;
-    left: 30px;
+    right: 30px;
     z-index: -1;
 }
 
 /* Sezione game */
 #game{
-    font-family: 'Exo 2', sans-serif;
-    /* width: 50%; */
-    /* width: 606px; */
-    /* height: 700px; */
-    /* height: 80%; */
+    font-family: 'Exo', sans-serif;
     background-color: white;
-    margin: auto;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+    border-top-width: 0;
+    margin: auto;
+    overflow: hidden;
+}
+/* Barra nav finestra */
+.window-nav{
+    /* font-family: 'Mukta', sans-serif; */
+    height: 30px;
+    color: white;
+    background: linear-gradient(to bottom, #3168d5 2%, #3888e9 4%, #4993e6 6%, #307be5 8%, #286add 5%, #245dd7 10%, #245edc 100%);
+    padding: 0 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+/* Logo minesweeper */
+.window-nav .title img{
+    width: 25px;
+}
+/* Titoletto finestra */
+.title h5{
+    font-weight: 500;
+    display: inline-block;
+    text-shadow: 1px 1px 0 black;
+    vertical-align: bottom;
+}
+/* Immagini minimize, close, full-screen */
+.window-nav img{
+    vertical-align: middle;
+}
+.window-nav img:not(.title img){
+    cursor: pointer;
+}
+.window-nav img:not(.title img):hover{
+    opacity: 0.6;
+}
+
+/* Corpo finestra */
+.window-body{
     border: 3px solid #245edc;
     border-top-width: 0;
+}
+/* Sezione opzione finestra */
+.window-options{
+    background-color: #ece9d8;
+    height: 20px;
+    padding: 0 5px;
+    text-shadow: 1px 1px 0 lightgray;
+    line-height: 20px;
     overflow: hidden;
-    background-color: pink;
+}
+.window-options a{
+    display: inline-block;
+    height: 100%;
+    color: black;
+    font-size: 12px;
+    font-weight: 500;
+    margin-right: 10px;
+}
+.window-options a:hover{
+    background-color: #bdbaac;
 }
 
-.window-nav{
-    height: 30px;
-    background: linear-gradient(to bottom, #3168d5 2%, #3888e9 4%, #4993e6 6%, #307be5 8%, #286add 5%, #245dd7 10%, #245edc 100%);
+/* Corpo del gioco */
+.game-body{
+    border-top: 5px solid white;
+    border-left: 5px solid white;
+    background-color: #c0c0c0;
+    padding: 7px;
 }
 
-/* Lista quadrati */
+.game-nav{
+    background-color: #c0c0c0;
+    height: 50px;
+    margin-bottom: 5px;
+    padding: 5px;
+    border: 2px solid white;
+    border-top: 2px solid #80807e;
+    border-left: 2px solid #80807e;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+/* Conta punti/timer */
+.game-nav .points{
+    height: 33px;
+    font-size:40px;
+    line-height: 40px;
+    font-family: Alarm;
+    text-align: right;
+    color:rgb(221, 0, 0);
+    background-color: black;
+    position: relative;
+    min-width: 55px;
+}
+.points .overlay{
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.3;
+}
+
+/* Start btn */
+#btnStart{
+    background-color: #c0c0c0;
+    cursor: pointer;
+    border: 3px solid white;
+    border-right: 3px solid #80807e;
+    border-bottom: 3px solid #80807e;
+    padding: 2px;
+    box-shadow: -1px -1px 0 0 rgb(148, 147, 147);
+}
+#btnStart:hover{
+    border: 2px solid white;
+    border-top: 2px solid #80807e;
+    border-left: 2px solid #80807e;
+    opacity: 0.8;
+}
+#btnStart img{
+    width: 30px;
+    vertical-align: middle;
+}
+
+/* Matrice di celle */
 ul#matrix{
-    /* width: 100%; */
+    font-family: 'Exo 2', sans-serif;
     width: 680px;
     height: 100%;
     display: flex;
@@ -63,7 +178,9 @@ ul#matrix{
     justify-content: center;
     align-content: center;
     margin: 0 auto;
-    padding: 10px;
+    border: 3px solid white;
+    border-top: 3px solid #808080;
+    border-left: 3px solid #808080;
 }
 #matrix .cell{
     flex-basis: calc(100% / 30);
@@ -79,10 +196,11 @@ ul#matrix{
 .cell .bomb.active {
     background-color: red;
 }
-.cell .bomb + .cover{
-    display: none;
-}
+/* .cell .bomb + .cover{
+    display: none; 
+} */
 
+/* Cover sulle celle */
 #matrix .cell .cover{
     width: 100%;
     height: 100%;
@@ -96,15 +214,14 @@ ul#matrix{
     z-index: 100;
     margin: 0;
     padding: 0;
-    display: none;
+    opacity: 0.5;
 }
 
+/* Numero all'interno della cella */
 .cell span{
     font-weight: 900;
-    /* display: inline-block; */
     width: 100%;
 }
-
 .blue{
     color: blue;
 }
@@ -118,9 +235,8 @@ ul#matrix{
     color:fuchsia;
 }
 
-/* Footer */
+/* Footer XP */
 .footer-nav{
     background: linear-gradient(to bottom, #3168d5 2%, #3888e9 4%, #4993e6 6%, #307be5 8%, #286add 5%, #245dd7 10%, #245edc 100%);
-    height: 50px;
-    /* border-top: 3px solid #4f87c2; */
+    height: 45px;
 }
