@@ -46,18 +46,14 @@ function clikcedCell(){
 
 // Funzione calcolo bombe vicine
 function nearBomb(bombs) {
-    let cells = $('.cell');
-    let bombCounter = 0;
-
+    // Ciclo le 100 bombe che conosco già
+    // E richiamo il contatore bombe vicine passando la posizione
+    // della bomba come parametro
     let posNum = -1;
-    for (let j = 0; j <750; j++) {
-        let bomb = $(cells[j]);
-        if (bomb.data('bomb') == 1) {
-            posNum = bomb.data('pos');
-            let pos = '';
-            bombCount(posNum);
-            bombCounter ++;
-        }
+    for (let j = 0; j <100; j++) {
+        let bomb = $(bombs[j]);
+        posNum = bomb[0];
+        bombCount(posNum);
     }
 }
 
@@ -69,50 +65,58 @@ function bombCount(posNum) {
     for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
             let cellLi = $(cellList[posNum]);
-            console.log(cellLi);
-            console.log('POS prima:' + posNum);
+            let liSpan = cellLi.children('span');
             
+            // Verifico se posNum è nel range consentito
             if(posNum >= 0 && posNum <= 749) {
                 let pos2 = posNum + 1;
-                let pos3 = posNum + 2
+                //Se mi trovo in ultima cell SX
                 if ((pos2 % 30 == 0) && j == 1) {
-                    console.log('WABAAAAAAAAAAAAA');
                     j = 3;
                     posNum++;
-                } else if ((pos2 % 30 == 0) && j == 0) {
-                    console.log('UMSSSSSSSDDADS222222');
+                } 
+                // Se invece mi trovo in prima cell DX
+                else if ((pos2 % 30 == 0) && j == 0) {
                     posNum++;
                     continue;
                 }
+                // Se mi trovo in ultima cell, in riga 1
                 else if(posNum == 0 && j == 2){
                     posNum++;
                     break;
                 }
+                // Prendo i contenuti della cell
                 let num = 0;
                 let textHTML = cellLi.html();
                 let isValue = parseInt(cellLi.text());
                 
-                console.log('IS VALUE: ' + isValue);
-                console.log('HA BOMBA ' + cellLi.data('bomb'));
+                // Controllo se cell è NaN e non è una bomba
                 if (isNaN(isValue) && cellLi.data('bomb') != 1) {
                     num = num + 1;
                     cellLi.html(textHTML + '<span class="blue">' + num + '</span>')
                 }
+                // Altrimenti se non è una bomba ed ha un valore
+                // diverso da NaN, cambio valore e colore
                 else if(isNaN(isValue) == false && cellLi.data('bomb') != 1){
-                    console.log(isValue);
                     num = isValue + 1;
-                    if (num == 2) {
-                        cellLi.html(textHTML + '<span class="green">' + num + '</span>');
-                        cellLi.children('.blue').remove(); 
-                    }else if(num == 3){
-                        cellLi.html(textHTML + '<span class="red">' + num + '</span>');
-                        cellLi.children('.green').remove(); 
-                    }else if(num == 4){
-                        cellLi.html(textHTML + '<span class="dark">' + num + '</span>');
-                        cellLi.children('.red').remove(); 
-                    }else{
-                        cellLi.html(textHTML + '<span class="dark">' + num + '</span>');
-                        cellLi.children('.dark:first-of-type').remove(); 
+                    switch (num) {
+                        case 2:
+                            liSpan.removeClass('blue');
+                            liSpan.addClass('green');
+                            liSpan.text(num);
+                            break;
+                        case 3:
+                            liSpan.removeClass('green');
+                            liSpan.addClass('red');
+                            liSpan.text(num);
+                        break;
+                        default:
+                            if (liSpan.hasClass('red')) {
+                                liSpan.removeClass('red');
+                                liSpan.addClass('dark');
+                            }
+                            liSpan.text(num);
+                            break;
                     }
                 }
             }
