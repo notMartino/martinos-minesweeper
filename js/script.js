@@ -34,16 +34,6 @@ function bombCreator(){
     return rndBombs;
 }
 
-// Funzione rimozione cover al click
-function clikcedCell(){
-    let cells = $('.cell');
-
-    cells.click(function (){
-        let cell = $(this);
-        cell.children('.cover').hide();
-    });
-}
-
 // Funzione calcolo bombe vicine
 function nearBomb(bombs) {
     // Ciclo le 100 bombe che conosco già
@@ -126,6 +116,50 @@ function bombCount(posNum) {
     }
 }
 
+// Funzione rimozione cover al click
+function clikcedCell(bombs){
+    let cells = $('.cell');
+
+    cells.click(function (event) {
+        let cell = $(this);
+        let isWin = isClick(bombs, cell);
+        if (isWin == false) {
+            console.log('AOO' + isWin);
+            cells.off('click');
+        }
+    });
+}
+function isClick(bombs, cell, event) {
+    cell.children('.cover').remove();
+    let isWin = wildfireDiscover(cell, bombs);
+    return winLose(isWin);
+}
+
+// Funzione rimozione cover a macchia d'olio
+function wildfireDiscover(cell, bombs) {
+    cellContent = cell.children(); 
+    let cells = $('.cell');
+    if (cellContent.hasClass('bomb')) {
+        cell.attr('id', 'active');
+        for (let i = 0; i < bombs.length; i++) {
+            let bombCell = bombs[i];
+            $(cells[bombCell]).children('.cover').remove();
+        }
+        
+        let isWin = false;
+        console.log('Hai perso! ' + isWin);
+        return isWin;
+    }
+}
+
+// Funzione winLose
+function winLose(isWin){
+    if (isWin == false) {
+        return isWin;
+    }
+}
+
+
 // Funzione principale
 function minesweeper(){
     // Creo le bombe
@@ -137,7 +171,7 @@ function minesweeper(){
     nearBomb(bombs);
 
     // Rimuovo cover al click
-    clikcedCell();
+    clikcedCell(bombs);
 }
 // Richiamo funz. principale
 $(document).ready(minesweeper);

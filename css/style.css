@@ -193,8 +193,18 @@ ul#matrix{
 .cell .bomb{
     width: 100%;
 }
-.cell .bomb.active {
+.cell#active {
     background-color: red;
+    animation: redping infinite linear 1s;
+}
+
+@keyframes redping{
+    30%{
+        background-color: rgba(255, 0, 0, 0.2);
+    }
+    60%{
+        background-color: red;
+    }
 }
 /* .cell .bomb + .cover{
     display: none; 
