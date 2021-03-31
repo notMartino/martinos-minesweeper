@@ -224,7 +224,7 @@ ul#matrix{
     z-index: 100;
     margin: 0;
     padding: 0;
-    opacity: 0.5;
+    opacity: 1;
 }
 
 /* Numero all'interno della cella */

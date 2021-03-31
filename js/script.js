@@ -162,11 +162,11 @@ function wildfireDiscover(cell, bombs) {
         let cellNextSx = ($(cells[(position - 1)]));
         removeSX(cellNextSx, cell, cells);
 
-        // let cellNextUp = ($(cells[(position -30)]));
-        // removeUP(cellNextUp, cell, cells);
+        let cellNextUp = ($(cells[(position -30)]));
+        removeUP(cellNextUp, cell, cells);
 
-        // let cellNextDown = ($(cells[(position +30)]));
-        // removeDOWN(cellNextDown, cell, cells);
+        let cellNextDown = ($(cells[(position +30)]));
+        removeDOWN(cellNextDown, cell, cells);
         
     }
 }
@@ -176,29 +176,36 @@ function removeDX(cellNextDx, cell, cells) {
     let contDX = true;
 
     while (contDX == true){
-        if ((cell.data('pos') + 1) % 30 == 0) {
-            break;
-        }
-
-        let position = cellNextDx.data('pos');
-
-        let cellNextUp = ($(cells[(position -30)]));
-        removeUP(cellNextUp, cell, cells);
-
-        let cellNextDown = ($(cells[(position + 30)]));
-        removeDOWN(cellNextDown, cell, cells);
+        // if ((cell.data('pos') + 1) % 30 == 0) {
+            if ((cellNextDx.data('pos')) % 30 == 0) {
+                break;
+            }
+        
+        //     break;
+        // }
 
         if (cellNextDx.children('span').length > 0) {
             contDX = false;
             cellNextDx.children('.cover').remove();
-        }else {
+        }
+        else if(cellNextDx.children('.cover').length < 1){
+            break;
+        } 
+        else {
             cellNextDx.children('.cover').remove();
+            
+            let position = cellNextDx.data('pos');
+
+            let cellNextUp = ($(cells[(position -30)]));
+            removeUP(cellNextUp, cell, cells);
+    
+            let cellNextDown = ($(cells[(position + 30)]));
+            removeDOWN(cellNextDown, cell, cells);
+
             cellNextDx = ($(cells[(cellNextDx.data('pos') + 1)]));
         }
 
-        if ((cellNextDx.data('pos')) % 30 == 0) {
-            break;
-        }
+        
     }
 }
 
@@ -206,23 +213,42 @@ function removeDX(cellNextDx, cell, cells) {
 function removeSX(cellNextSx, cell, cells) {
     let contSX = true;
     while (contSX == true){
+        let exit = false;
         // console.log(cellNextDx.children('span').length > 0);
         if (cell.data('pos') % 30 == 0) {
-            console.log('PRIMA CASELLA');
-            break;
-        }
-        if((cellNextSx.data('pos')) % 30 == 0){
-            cellNextSx.children('.cover').remove();
             break;
         }
 
         if (cellNextSx.children('span').length > 0) {
             contSX = false;
             cellNextSx.children('.cover').remove();
-        }else {
+        }
+        else if(cellNextSx.children('.cover').length < 1){
+            break;
+        } 
+        else {
+            if (cellNextSx.data('pos') % 30 == 0) {
+                // cellNextSx.children('.cover').remove();
+                console.log('PRIMA CASELLA');
+                cellNextSx.children('.cover').remove();
+                break;
+            }
+            
+            
+            let position = cellNextSx.data('pos');
+            
+            let cellNextUp = ($(cells[(position -30)]));
+            removeUP(cellNextUp, cell, cells);
+
+            let cellNextDown = ($(cells[(position + 30)]));
+            removeDOWN(cellNextDown, cell, cells);
+
             cellNextSx.children('.cover').remove();
             cellNextSx = ($(cells[(cellNextSx.data('pos') - 1)]));
         }
+
+        
+        
     }
 }
 
@@ -237,10 +263,24 @@ function removeUP(cellNextUp, cell, cells) {
         if (cellNextUp.children('span').length > 0) {
             contUP = false;
             cellNextUp.children('.cover').remove();
-        }else {
+        }
+        else if(cellNextUp.children('.cover').length < 1){
+            break;
+        } 
+        else {
             cellNextUp.children('.cover').remove();
+
+            let position = cellNextUp.data('pos');
+        
+            let cellNextDx = ($(cells[(position + 1)]));
+            removeDX(cellNextDx, cell, cells);
+        
+            let cellNextSx = ($(cells[(position - 1)]));
+            removeSX(cellNextSx, cell, cells);
+
+
             cellNextUp = ($(cells[(cellNextUp.data('pos') -30)]));
-            console.log(cellNextUp);
+            // console.log(cellNextUp.data('pos'));
         }
     }
 }
@@ -256,10 +296,23 @@ function removeDOWN(cellNextDown, cell, cells) {
         if (cellNextDown.children('span').length > 0) {
             contUP = false;
             cellNextDown.children('.cover').remove();
-        }else {
+        }
+        else if(cellNextDown.children('.cover').length < 1){
+            break;
+        } 
+        else {
             cellNextDown.children('.cover').remove();
+            
+            let position = cellNextDown.data('pos');
+        
+            let cellNextDx = ($(cells[(position + 1)]));
+            removeDX(cellNextDx, cell, cells);
+    
+            let cellNextSx = ($(cells[(position - 1)]));
+            removeSX(cellNextSx, cell, cells);
+
             cellNextDown = ($(cells[(cellNextDown.data('pos') +30)]));
-            console.log(cellNextDown);
+            // console.log(cellNextDown);
         }
     }
 }
