@@ -47,7 +47,7 @@ function nearBomb(bombs) {
     }
 }
 
-// Funzione inseirmento num bombe
+// Funzione inserimento num bombe vicine
 function bombCount(posNum) {
     let cellList = $('.cell');
     posNum -= 31;
@@ -124,7 +124,7 @@ function clikcedCell(bombs){
         let cell = $(this);
         let isWin = isClick(bombs, cell);
         if (isWin == false) {
-            console.log('AOO' + isWin);
+            console.log('Is Win: ' + isWin);
             cells.off('click');
         }
     });
@@ -139,16 +139,128 @@ function isClick(bombs, cell, event) {
 function wildfireDiscover(cell, bombs) {
     cellContent = cell.children(); 
     let cells = $('.cell');
+
+    // Controllo se viene cliccata una bomba
     if (cellContent.hasClass('bomb')) {
         cell.attr('id', 'active');
         for (let i = 0; i < bombs.length; i++) {
             let bombCell = bombs[i];
             $(cells[bombCell]).children('.cover').remove();
         }
-        
+
         let isWin = false;
-        console.log('Hai perso! ' + isWin);
         return isWin;
+    }
+    // Se viene cliccata una cella vuota
+    else if(cellContent[0] == undefined){
+        // let contSX = true;
+        let position = cell.data('pos')
+        // console.log(position);
+        let cellNextDx = ($(cells[(position + 1)]));
+        removeDX(cellNextDx, cell, cells);
+
+        let cellNextSx = ($(cells[(position - 1)]));
+        removeSX(cellNextSx, cell, cells);
+
+        // let cellNextUp = ($(cells[(position -30)]));
+        // removeUP(cellNextUp, cell, cells);
+
+        // let cellNextDown = ($(cells[(position +30)]));
+        // removeDOWN(cellNextDown, cell, cells);
+        
+    }
+}
+
+// Funzione rimozione covers DX
+function removeDX(cellNextDx, cell, cells) {
+    let contDX = true;
+
+    while (contDX == true){
+        if ((cell.data('pos') + 1) % 30 == 0) {
+            break;
+        }
+
+        let position = cellNextDx.data('pos');
+
+        let cellNextUp = ($(cells[(position -30)]));
+        removeUP(cellNextUp, cell, cells);
+
+        let cellNextDown = ($(cells[(position + 30)]));
+        removeDOWN(cellNextDown, cell, cells);
+
+        if (cellNextDx.children('span').length > 0) {
+            contDX = false;
+            cellNextDx.children('.cover').remove();
+        }else {
+            cellNextDx.children('.cover').remove();
+            cellNextDx = ($(cells[(cellNextDx.data('pos') + 1)]));
+        }
+
+        if ((cellNextDx.data('pos')) % 30 == 0) {
+            break;
+        }
+    }
+}
+
+// Funzione rimozione covers SX
+function removeSX(cellNextSx, cell, cells) {
+    let contSX = true;
+    while (contSX == true){
+        // console.log(cellNextDx.children('span').length > 0);
+        if (cell.data('pos') % 30 == 0) {
+            console.log('PRIMA CASELLA');
+            break;
+        }
+        if((cellNextSx.data('pos')) % 30 == 0){
+            cellNextSx.children('.cover').remove();
+            break;
+        }
+
+        if (cellNextSx.children('span').length > 0) {
+            contSX = false;
+            cellNextSx.children('.cover').remove();
+        }else {
+            cellNextSx.children('.cover').remove();
+            cellNextSx = ($(cells[(cellNextSx.data('pos') - 1)]));
+        }
+    }
+}
+
+// Funzione rimozione covers UP
+function removeUP(cellNextUp, cell, cells) {
+    let contUP = true;
+    while (contUP == true){
+        if ((cellNextUp.data('pos')) == undefined) {
+            break;
+        }
+
+        if (cellNextUp.children('span').length > 0) {
+            contUP = false;
+            cellNextUp.children('.cover').remove();
+        }else {
+            cellNextUp.children('.cover').remove();
+            cellNextUp = ($(cells[(cellNextUp.data('pos') -30)]));
+            console.log(cellNextUp);
+        }
+    }
+}
+
+// Funzione rimozione covers DOWN
+function removeDOWN(cellNextDown, cell, cells) {
+    let contUP = true;
+    while (contUP == true){
+        if ((cellNextDown.data('pos')) == undefined) {
+            break;
+        }
+
+        if (cellNextDown.children('span').length > 0) {
+            contUP = false;
+            cellNextDown.children('.cover').remove();
+        }else {
+            cellNextDown.children('.cover').remove();
+            cellNextDown = ($(cells[(cellNextDown.data('pos') +30)]));
+            console.log(cellNextDown);
+        }
     }
 }
 
@@ -158,7 +270,6 @@ function winLose(isWin){
         return isWin;
     }
 }
-
 
 // Funzione principale
 function minesweeper(){
