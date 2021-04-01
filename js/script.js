@@ -126,7 +126,11 @@ function clikcedCell(bombs){
         if (isWin == false) {
             console.log('Is Win: ' + isWin);
             cells.off('click');
+            $('#smile').hide();
+            $('#dead').show();
         }
+
+        pointsCounter();
     });
 }
 function isClick(bombs, cell, event) {
@@ -195,6 +199,8 @@ function removeDX(cellNextDx, cell, cells) {
             cellNextDx.children('.cover').remove();
             
             let position = cellNextDx.data('pos');
+            cellNextDx = ($(cells[(cellNextDx.data('pos') + 1)]));
+            removeDX(cellNextDx, cell, cells)
 
             let cellNextUp = ($(cells[(position -30)]));
             removeUP(cellNextUp, cell, cells);
@@ -202,7 +208,6 @@ function removeDX(cellNextDx, cell, cells) {
             let cellNextDown = ($(cells[(position + 30)]));
             removeDOWN(cellNextDown, cell, cells);
 
-            cellNextDx = ($(cells[(cellNextDx.data('pos') + 1)]));
         }
 
         
@@ -218,6 +223,12 @@ function removeSX(cellNextSx, cell, cells) {
         if (cell.data('pos') % 30 == 0) {
             break;
         }
+        if ((cellNextSx.data('pos') + 1) % 30 == 0) {
+            // cellNextSx.children('.cover').remove();
+            console.log('PRIMA CASELLA');
+            // cellNextSx.children('.cover').remove();
+            break;
+        }
 
         if (cellNextSx.children('span').length > 0) {
             contSX = false;
@@ -227,23 +238,25 @@ function removeSX(cellNextSx, cell, cells) {
             break;
         } 
         else {
+            let position = cellNextSx.data('pos');
+            
+            cellNextSx.children('.cover').remove();
+            
+            let cellNextUp = ($(cells[(position -30)]));
+            removeUP(cellNextUp, cell, cells);
+            
+            let cellNextDown = ($(cells[(position + 30)]));
+            removeDOWN(cellNextDown, cell, cells);
+            
+            
             if (cellNextSx.data('pos') % 30 == 0) {
                 // cellNextSx.children('.cover').remove();
                 console.log('PRIMA CASELLA');
-                cellNextSx.children('.cover').remove();
+                // cellNextSx.children('.cover').remove();
                 break;
             }
             
             
-            let position = cellNextSx.data('pos');
-            
-            let cellNextUp = ($(cells[(position -30)]));
-            removeUP(cellNextUp, cell, cells);
-
-            let cellNextDown = ($(cells[(position + 30)]));
-            removeDOWN(cellNextDown, cell, cells);
-
-            cellNextSx.children('.cover').remove();
             cellNextSx = ($(cells[(cellNextSx.data('pos') - 1)]));
         }
 
@@ -271,6 +284,8 @@ function removeUP(cellNextUp, cell, cells) {
             cellNextUp.children('.cover').remove();
 
             let position = cellNextUp.data('pos');
+            cellNextUp = ($(cells[(cellNextUp.data('pos') -30)]));
+            removeUP(cellNextUp, cell, cells)
         
             let cellNextDx = ($(cells[(position + 1)]));
             removeDX(cellNextDx, cell, cells);
@@ -279,7 +294,6 @@ function removeUP(cellNextUp, cell, cells) {
             removeSX(cellNextSx, cell, cells);
 
 
-            cellNextUp = ($(cells[(cellNextUp.data('pos') -30)]));
             // console.log(cellNextUp.data('pos'));
         }
     }
@@ -304,17 +318,57 @@ function removeDOWN(cellNextDown, cell, cells) {
             cellNextDown.children('.cover').remove();
             
             let position = cellNextDown.data('pos');
-        
+            cellNextDown = ($(cells[(cellNextDown.data('pos') +30)]));
+            removeDOWN(cellNextDown, cell, cells)
+
             let cellNextDx = ($(cells[(position + 1)]));
             removeDX(cellNextDx, cell, cells);
     
             let cellNextSx = ($(cells[(position - 1)]));
             removeSX(cellNextSx, cell, cells);
 
-            cellNextDown = ($(cells[(cellNextDown.data('pos') +30)]));
             // console.log(cellNextDown);
         }
     }
+}
+
+// Funzione calcolo punteggio
+function pointsCounter(){
+    let cellList = $('#matrix').children();
+    // console.log(cellList);
+    let points = 0;
+    for (let i = 0; i < cellList.length; i++) {
+        const element = $(cellList[i]);
+        if (element.children('.cover').length == 0) {
+            points++;
+            if (element.children('.bomb').length > 0) {
+                points --;
+            }
+        }
+    }
+
+    let pointUnita = $('#point').children('.unita');
+    let pointDecina = $('#point').children('.decina');
+    let pointCentinaia = $('#point').children('.centinaia');
+
+    points = points.toString();
+    if (points.charAt(points.lenght - 1 )) {
+        pointUnita.text(points.charAt(points.length - 1));
+        pointUnita.addClass('active');
+        $('#point').children('.overlay').show();
+    }
+
+    if (points.charAt(points.length - 2)) {
+        pointDecina.text(points.charAt(points.length - 2));
+        pointDecina.addClass('active');
+    }
+
+    if (points.charAt(points.length - 3)) {
+        pointCentinaia.text(points.charAt(points.length - 3));
+        pointCentinaia.addClass('active');
+    }
+    // pointUnita.text(points.charAt(points.lenght - 1) );
+    console.log('Totale: ' + points);
 }
 
 // Funzione winLose
@@ -324,18 +378,32 @@ function winLose(isWin){
     }
 }
 
+// -----------------------------------------------
 // Funzione principale
 function minesweeper(){
-    // Creo le bombe
-    let bombs = bombCreator();
-    // Creo le celle
-    cellCreator(bombs);
 
-    // Bomba vicina
-    nearBomb(bombs);
+    // Schermata iniziale
+    martinos();
 
-    // Rimuovo cover al click
-    clikcedCell(bombs);
+    $('#btnStart').click(function () {
+        $('#point > .unita').text(0).removeClass('active');
+        $('#point > .decina').text(0).removeClass('active');
+        $('#point > .centinaia').text(0).removeClass('active');
+
+        // Creo le bombe
+        let bombs = bombCreator();
+        // Creo le celle
+        cellCreator(bombs);
+
+        // Bomba vicina
+        nearBomb(bombs);
+
+        // Rimuovo cover al click
+        clikcedCell(bombs);
+    });
+
 }
 // Richiamo funz. principale
 $(document).ready(minesweeper);
+
+// -----------------------------------------------

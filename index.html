@@ -22,6 +22,7 @@
     <!-- JQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
+    <script src="js/initgame.js"></script>
     <script src="js/script.js"></script>
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -57,22 +58,23 @@
                 <div class="game-body">
                     <!-- Nav del gioco -->
                     <div class="game-nav">
-                        <div class="points">
-                            <span class="unita">3</span>
-                            <span class="decina">1</span>
-                            <span class="centinaia">1</span>
-                            <span class="overlay">000</span>
+                        <div class="points" id="time">
+                            <span class="unita">0</span>
+                            <span class="decina">0</span>
+                            <span class="centinaia">0</span>
+                            <!-- <span class="overlay">000</span> -->
                         </div>
 
                         <div id="btnStart">
-                            <img src="img/smile-face.png" alt="Smile face">
+                            <img src="img/smile-face.png" id="smile" alt="Smile face">
+                            <img src="img/smile-dead.png" id="dead" alt="Dead smile">
                         </div>
 
-                        <div class="points">
-                            <span class="unita">1</span>
-                            <span class="decina">1</span>
-                            <span class="centinaia">1</span>
-                            <span class="overlay">000</span>
+                        <div class="points" id="point">
+                            <span class="unita">0</span>
+                            <span class="decina">0</span>
+                            <span class="centinaia">0</span>
+                            <!-- <span class="overlay">000</span> -->
                         </div>
                     </div>
 

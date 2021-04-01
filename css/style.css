@@ -131,21 +131,24 @@ img#logo{
 /* Conta punti/timer */
 .game-nav .points{
     height: 33px;
+    width: 60px;
     font-size:40px;
     line-height: 40px;
     font-family: Alarm;
     text-align: right;
-    color:rgb(221, 0, 0);
     background-color: black;
     position: relative;
-    min-width: 55px;
+    /* min-width: 55px;  */
+    color:rgb(221, 0, 0);
+    /* width: 50px; */
 }
-.points .overlay{
+/* .points .overlay{
     position: absolute;
     top: 0;
-    left: 0;
+    right: 0;
     opacity: 0.3;
-}
+    display: none;
+} */
 
 /* Start btn */
 #btnStart{
@@ -166,6 +169,15 @@ img#logo{
 #btnStart img{
     width: 30px;
     vertical-align: middle;
+}
+#btnStart:hover #smile{
+    display: none;
+}
+#btnStart #dead{
+    display: none;
+}
+#btnStart:hover #dead{
+    display: inline-block;
 }
 
 /* Matrice di celle */
@@ -243,6 +255,20 @@ ul#matrix{
 }
 .dark{
     color:fuchsia;
+}
+
+/* Punti */
+#point span, #time span{
+    color:rgb(221, 0, 0);
+    opacity: 0.3;
+    float: right;
+    width: 20px;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+#point span.active{
+    opacity: 1;
 }
 
 /* Footer XP */
