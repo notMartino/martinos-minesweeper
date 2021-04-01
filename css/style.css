@@ -271,6 +271,11 @@ ul#matrix{
     opacity: 1;
 }
 
+/* Bandiera */
+.bandiera{
+    width: 12px;
+    vertical-align: top;
+}
 /* Footer XP */
 .footer-nav{
     background: linear-gradient(to bottom, #3168d5 2%, #3888e9 4%, #4993e6 6%, #307be5 8%, #286add 5%, #245dd7 10%, #245edc 100%);

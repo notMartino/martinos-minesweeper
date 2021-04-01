@@ -98,7 +98,6 @@ function martinos(){
     removeAdd($(liList[292]));
     removeAdd($(liList[322]));
 
-
     // Lettera O
     removeAdd($(liList[264]));
     removeAdd($(liList[294]));
@@ -113,7 +112,6 @@ function martinos(){
 }
 
 function removeAdd(element) {
-    console.log(element);
     element.empty();
     element.attr('id', 'active');
     element.append('<img class="bomb" src="img/mine.png" alt="">');

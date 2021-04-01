@@ -378,6 +378,22 @@ function winLose(isWin){
     }
 }
 
+// Funzione flag a click destro
+function flag() {
+    const cells = $('.cell');
+
+    cells.mousedown(function (event) {
+        console.log(event.which);
+        const cell = $(this)
+        if (event.which == 2 && cell.find('.bandiera').length < 1) {
+            console.log(cell);
+            cell.children('.cover').append('<img class="bandiera" src="img/flag.png" alt="Bandiera">');
+        }else if (event.which == 2){
+            cell.children('.cover').empty();
+        }
+    })
+}
+
 // -----------------------------------------------
 // Funzione principale
 function minesweeper(){
@@ -385,10 +401,16 @@ function minesweeper(){
     // Schermata iniziale
     martinos();
 
+    // Click su bottone start (smile)
     $('#btnStart').click(function () {
+        // Azzero il punteggio
         $('#point > .unita').text(0).removeClass('active');
         $('#point > .decina').text(0).removeClass('active');
         $('#point > .centinaia').text(0).removeClass('active');
+
+        // Rimetto la faccina smile
+        $('#dead').hide();
+        $('#smile').show();
 
         // Creo le bombe
         let bombs = bombCreator();
@@ -398,6 +420,9 @@ function minesweeper(){
         // Bomba vicina
         nearBomb(bombs);
 
+        // Ascolto click destro per flags
+        flag();
+
         // Rimuovo cover al click
         clikcedCell(bombs);
     });
@@ -405,5 +430,3 @@ function minesweeper(){
 }
 // Richiamo funz. principale
 $(document).ready(minesweeper);
-
-// -----------------------------------------------
