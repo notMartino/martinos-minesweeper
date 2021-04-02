@@ -15,7 +15,7 @@ function cellCreator(bombs){
 
 // Funzione creatore bombe
 function bombCreator(){
-    let min = 0;
+    let min = 1;
     let max = 749 - min + 1;
     let rndBombs = [];
 
@@ -367,7 +367,7 @@ function pointsCounter(){
         pointCentinaia.text(points.charAt(points.length - 3));
         pointCentinaia.addClass('active');
     }
-    // pointUnita.text(points.charAt(points.lenght - 1) );
+
     console.log('Totale: ' + points);
 }
 
@@ -383,12 +383,15 @@ function flag() {
     const cells = $('.cell');
 
     cells.mousedown(function (event) {
+        cells.bind("contextmenu",function(e){
+            return false;
+        }); 
         console.log(event.which);
         const cell = $(this)
-        if (event.which == 2 && cell.find('.bandiera').length < 1) {
+        if (event.which == 3 && cell.find('.bandiera').length < 1) {
             console.log(cell);
             cell.children('.cover').append('<img class="bandiera" src="img/flag.png" alt="Bandiera">');
-        }else if (event.which == 2){
+        }else if (event.which == 3){
             cell.children('.cover').empty();
         }
     })
@@ -417,7 +420,7 @@ function minesweeper(){
         // Creo le celle
         cellCreator(bombs);
 
-        // Bomba vicina
+        // Bomba vicine
         nearBomb(bombs);
 
         // Ascolto click destro per flags
