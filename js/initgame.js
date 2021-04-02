@@ -1,6 +1,8 @@
 function martinos(){
     let gameWindow = $('#matrix');
+    $('#btnStart').addClass('redStartBtn');
     let gameWindowList = '';
+    
 
     for (let i = 0; i < (25 * 30); i++) {
         gameWindowList = gameWindowList + '<li class="cell" data-pos="' + (i) +'"><div class="cover"></div></li>';
@@ -10,46 +12,46 @@ function martinos(){
     let liList = gameWindow.children();
 
     // Lettera N
-    removeAdd($(liList[68]));
-    removeAdd($(liList[98]));
-    removeAdd($(liList[128]));
-    removeAdd($(liList[158]));
-    removeAdd($(liList[188]));
-
+    removeAdd($(liList[69]));
     removeAdd($(liList[99]));
     removeAdd($(liList[129]));
-    removeAdd($(liList[130]));
-    removeAdd($(liList[160]));
+    removeAdd($(liList[159]));
+    // removeAdd($(liList[189]));
+
+    removeAdd($(liList[100]));
+    // removeAdd($(liList[130]));
+    removeAdd($(liList[131]));
+    // removeAdd($(liList[161]));
     
 
-    removeAdd($(liList[71]));
-    removeAdd($(liList[101]));
-    removeAdd($(liList[131]));
-    removeAdd($(liList[161]));
-    removeAdd($(liList[191]));
+    removeAdd($(liList[72]));
+    removeAdd($(liList[102]));
+    removeAdd($(liList[132]));
+    removeAdd($(liList[162]));
+    // removeAdd($(liList[192]));
 
     // Lettera O
-    removeAdd($(liList[73]));
-    removeAdd($(liList[103]));
-    removeAdd($(liList[133]));
-    removeAdd($(liList[163]));
-
     removeAdd($(liList[74]));
-    
-    removeAdd($(liList[75]));
-    removeAdd($(liList[105]));
-    removeAdd($(liList[135]));
-    removeAdd($(liList[165]));
-    
+    removeAdd($(liList[104]));
+    removeAdd($(liList[134]));
     removeAdd($(liList[164]));
 
+    removeAdd($(liList[75]));
+    
+    removeAdd($(liList[76]));
+    removeAdd($(liList[106]));
+    removeAdd($(liList[136]));
+    removeAdd($(liList[166]));
+    
+    removeAdd($(liList[165]));
+
     // Lettera T
-    removeAdd($(liList[77]));
     removeAdd($(liList[78]));
     removeAdd($(liList[79]));
-    removeAdd($(liList[108]));
-    removeAdd($(liList[138]));
-    removeAdd($(liList[168]));
+    removeAdd($(liList[80]));
+    removeAdd($(liList[109]));
+    removeAdd($(liList[139]));
+    removeAdd($(liList[169]));
 
     // A CAPO ---------------
     // Lettera M

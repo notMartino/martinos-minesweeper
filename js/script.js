@@ -110,8 +110,10 @@ function bombCount(posNum) {
                     }
                 }
             }
+            // Incremento e passo alla cella successiva
             posNum++;
-        }   
+        }  
+        // Vado alla riga successiva in posizione 0 
         posNum = (posNum - 3) + 30;
     }
 }
@@ -124,15 +126,17 @@ function clikcedCell(bombs){
         let cell = $(this);
         let isWin = isClick(bombs, cell);
         if (isWin == false) {
-            console.log('Is Win: ' + isWin);
+            console.log('BOOOM! Hai perso!');
             cells.off('click');
             $('#smile').hide();
             $('#dead').show();
+            clearTimeout(timerVar);
         }
 
         pointsCounter();
     });
 }
+
 function isClick(bombs, cell, event) {
     cell.children('.cover').remove();
     let isWin = wildfireDiscover(cell, bombs);
@@ -155,11 +159,12 @@ function wildfireDiscover(cell, bombs) {
         let isWin = false;
         return isWin;
     }
+    
     // Se viene cliccata una cella vuota
     else if(cellContent[0] == undefined){
-        // let contSX = true;
         let position = cell.data('pos')
-        // console.log(position);
+
+        // Richiamo le funz. di tutte e 4 le direzioni
         let cellNextDx = ($(cells[(position + 1)]));
         removeDX(cellNextDx, cell, cells);
 
@@ -180,37 +185,37 @@ function removeDX(cellNextDx, cell, cells) {
     let contDX = true;
 
     while (contDX == true){
-        // if ((cell.data('pos') + 1) % 30 == 0) {
-            if ((cellNextDx.data('pos')) % 30 == 0) {
-                break;
-            }
-        
-        //     break;
-        // }
+        // Se la cella cliccata è in ultima posizione a DX, Break
+        if ((cellNextDx.data('pos')) % 30 == 0) {
+            break; 
+        }
 
+        // Se la prossima cella ha un numero rimuovo la cover ed esco
         if (cellNextDx.children('span').length > 0) {
             contDX = false;
             cellNextDx.children('.cover').remove();
         }
+        // Se la cover è già stata rimossa, Break
         else if(cellNextDx.children('.cover').length < 1){
             break;
         } 
+        // Altrimenti concateno le funzioni di rimozione cover
         else {
             cellNextDx.children('.cover').remove();
             
+            // Richiamo DX
             let position = cellNextDx.data('pos');
             cellNextDx = ($(cells[(cellNextDx.data('pos') + 1)]));
             removeDX(cellNextDx, cell, cells)
 
+            //Richiamo UP
             let cellNextUp = ($(cells[(position -30)]));
             removeUP(cellNextUp, cell, cells);
-    
+            
+            // Richiamo DOWN
             let cellNextDown = ($(cells[(position + 30)]));
             removeDOWN(cellNextDown, cell, cells);
-
         }
-
-        
     }
 }
 
@@ -218,15 +223,12 @@ function removeDX(cellNextDx, cell, cells) {
 function removeSX(cellNextSx, cell, cells) {
     let contSX = true;
     while (contSX == true){
-        let exit = false;
-        // console.log(cellNextDx.children('span').length > 0);
+
         if (cell.data('pos') % 30 == 0) {
             break;
         }
         if ((cellNextSx.data('pos') + 1) % 30 == 0) {
-            // cellNextSx.children('.cover').remove();
             console.log('PRIMA CASELLA');
-            // cellNextSx.children('.cover').remove();
             break;
         }
 
@@ -250,18 +252,11 @@ function removeSX(cellNextSx, cell, cells) {
             
             
             if (cellNextSx.data('pos') % 30 == 0) {
-                // cellNextSx.children('.cover').remove();
                 console.log('PRIMA CASELLA');
-                // cellNextSx.children('.cover').remove();
                 break;
             }
-            
-            
             cellNextSx = ($(cells[(cellNextSx.data('pos') - 1)]));
         }
-
-        
-        
     }
 }
 
@@ -292,9 +287,6 @@ function removeUP(cellNextUp, cell, cells) {
         
             let cellNextSx = ($(cells[(position - 1)]));
             removeSX(cellNextSx, cell, cells);
-
-
-            // console.log(cellNextUp.data('pos'));
         }
     }
 }
@@ -326,8 +318,6 @@ function removeDOWN(cellNextDown, cell, cells) {
     
             let cellNextSx = ($(cells[(position - 1)]));
             removeSX(cellNextSx, cell, cells);
-
-            // console.log(cellNextDown);
         }
     }
 }
@@ -335,8 +325,9 @@ function removeDOWN(cellNextDown, cell, cells) {
 // Funzione calcolo punteggio
 function pointsCounter(){
     let cellList = $('#matrix').children();
-    // console.log(cellList);
     let points = 0;
+
+    // Controllo ogni cella senza cover e conto
     for (let i = 0; i < cellList.length; i++) {
         const element = $(cellList[i]);
         if (element.children('.cover').length == 0) {
@@ -351,18 +342,22 @@ function pointsCounter(){
     let pointDecina = $('#point').children('.decina');
     let pointCentinaia = $('#point').children('.centinaia');
 
+    // Trasformo i punti in stringa
     points = points.toString();
+    // Inserisco la cifra delle unità nelle unità
     if (points.charAt(points.lenght - 1 )) {
         pointUnita.text(points.charAt(points.length - 1));
         pointUnita.addClass('active');
         $('#point').children('.overlay').show();
     }
 
+    // Inserisco la cifra delle decine nelle decine
     if (points.charAt(points.length - 2)) {
         pointDecina.text(points.charAt(points.length - 2));
         pointDecina.addClass('active');
     }
 
+    // Inserisco la cifra delle centinaia nelle centinaia
     if (points.charAt(points.length - 3)) {
         pointCentinaia.text(points.charAt(points.length - 3));
         pointCentinaia.addClass('active');
@@ -382,30 +377,75 @@ function winLose(isWin){
 function flag() {
     const cells = $('.cell');
 
+    // Ascolto se è stato premuto il tasto destro su cover
     cells.mousedown(function (event) {
+        // Rimuovo il menu ispeziona
         cells.bind("contextmenu",function(e){
             return false;
         }); 
         console.log(event.which);
         const cell = $(this)
+
+        // Se corrisponde e non ha una bandiera, la metto
         if (event.which == 3 && cell.find('.bandiera').length < 1) {
             console.log(cell);
             cell.children('.cover').append('<img class="bandiera" src="img/flag.png" alt="Bandiera">');
-        }else if (event.which == 3){
+        }
+        // Altrimenti la tolgo
+        else if (event.which == 3){
             cell.children('.cover').empty();
         }
-    })
+    });
+}
+
+// Timer partita
+function timer() {
+    cont++;
+    let unita = $('#time > .unita');
+    let decina = $('#time > .decina');
+    let centinaia =  $('#time > .centinaia');
+
+    // Trasformo i secondi in stringa
+    let sec = cont.toString();
+    
+    // Da 0 a 9 unitò stampo nelle casella unità
+    unita.text(sec[sec.length -1]).addClass('active');
+
+    // Da 0 a 9 decine stampo nelle casella decine
+    if(cont > 9){
+        decina.text(sec[sec.length -2]);
+        decina.addClass('active');
+    }else{
+        decina.text(0).removeClass('active');
+    }
+
+    // Da 0 a 9  stampo nella casella decine
+    if(cont > 99){
+        centinaia.text(sec[sec.length -3]);
+        centinaia.addClass('active');
+    }else{
+        centinaia.text(0).removeClass('active');
+    }
+
+    // Concateno la stessa funzione fino a 998
+    if (cont < 999) {
+        timerVar = setTimeout(timer, 1000);
+    }
+    // A 999 l'utente ha perso
+    else{
+        cont = 0;
+        $('.cell').off('click');
+        $('.cell').off('mousedown');
+    }
 }
 
 // -----------------------------------------------
 // Funzione principale
 function minesweeper(){
 
-    // Schermata iniziale
-    martinos();
-
     // Click su bottone start (smile)
     $('#btnStart').click(function () {
+
         // Azzero il punteggio
         $('#point > .unita').text(0).removeClass('active');
         $('#point > .decina').text(0).removeClass('active');
@@ -414,6 +454,13 @@ function minesweeper(){
         // Rimetto la faccina smile
         $('#dead').hide();
         $('#smile').show();
+        $('#btnStart').removeClass('redStartBtn');
+
+        // Parte il timer
+        clearTimeout(timerVar);
+        cont--;
+        timer();
+        cont = 0;
 
         // Creo le bombe
         let bombs = bombCreator();
@@ -431,5 +478,7 @@ function minesweeper(){
     });
 
 }
+let timerVar;
+let cont = 0;
 // Richiamo funz. principale
 $(document).ready(minesweeper);
