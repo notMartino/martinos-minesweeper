@@ -49,32 +49,43 @@
 
             <!-- Corpo della finestra -->
             <div class="window-body">
-                <div class="window-options">
-                    <a href="#">Game</a>
-                    <a href="#">Help</a>
-                </div>
+                <!-- <div class="window-options"> -->
+                    <ul class="window-options">
+                        <li id="gameMode">
+                            <span>Game</span>
+
+                            <ul class="modeWindow">
+                                <li id="easyMode">Easy</li>
+                                <li id="normalMode">Normal</li>
+                                <li id="hardMode">Hard</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="https://docs.google.com/document/d/1LPZhea5Y5yzLzlMu6sjy4jiQurbOimuPjYVQtmSGSK4/edit?usp=sharing" target="_blank">Help</a>
+                        </li>
+                    </ul>
+                <!-- </div> -->
     
                 <!-- Corpo del gioco -->
                 <div class="game-body">
                     <!-- Nav del gioco -->
                     <div class="game-nav">
-                        <div class="points" id="time">
-                            <span class="unita">0</span>
-                            <span class="decina">0</span>
-                            <span class="centinaia">0</span>
-                        </div>
-
-                        <div id="btnStart">
-                            <img src="img/smile-face.png" id="smile" alt="Smile face">
-                            <img src="img/smile-dead.png" id="dead" alt="Dead smile">
-                        </div>
-
                         <div class="points" id="point">
                             <span class="unita">0</span>
                             <span class="decina">0</span>
                             <span class="centinaia">0</span>
                         </div>
-
+                        
+                        <div id="btnStart">
+                            <img src="img/smile-face.png" id="smile" alt="Smile face">
+                            <img src="img/smile-dead.png" id="dead" alt="Dead smile">
+                        </div>
+                        
+                        <div class="points" id="time">
+                            <span class="unita">0</span>
+                            <span class="decina">0</span>
+                            <span class="centinaia">0</span>
+                        </div>
                     </div>
 
                     <!-- Matrice cell -->

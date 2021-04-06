@@ -22,6 +22,9 @@ ul{
 a{
     text-decoration: none;
 }
+.hide{
+    display: none!important;
+}
 
 /* Proprietà main*/
 main{
@@ -87,25 +90,50 @@ img#logo{
     border: 3px solid #245edc;
     border-top-width: 0;
 }
+
 /* Sezione opzione finestra */
 .window-options{
     background-color: #ece9d8;
-    height: 20px;
+    /* height: 20px; */
     padding: 0 5px;
     text-shadow: 1px 1px 0 lightgray;
     line-height: 20px;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
-.window-options a{
+
+.window-options > li{
     display: inline-block;
+    position: relative;
     height: 100%;
     color: black;
     font-size: 12px;
     font-weight: 500;
     margin-right: 10px;
+    cursor: pointer;
 }
-.window-options a:hover{
+.window-options li:hover{
     background-color: #bdbaac;
+}
+
+.window-options a{
+    color: black;
+}
+/* Finestra game mode */
+#gameMode:hover .modeWindow{
+    display: block;
+}
+.modeWindow{
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 200;
+    min-width: 50px;
+    background-color: #ece9d8;
+    text-shadow: 1px 1px 0 lightgray;
+}
+.modeWindow li{
+    padding: 0 3px;
 }
 
 /* Corpo del gioco */

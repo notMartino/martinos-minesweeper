@@ -1,26 +1,45 @@
-// Funzione creatore celle e layer
-function cellCreator(bombs){
-    let gameWindow = $('#matrix');
-    let gameWindowList = '';
+// Funzione selettore difficoltà
+function setDifficulty(selectedMode) {
+    // const selectedMode = $(this);
+    const modeWindow = $('.modeWindow');
+    let difficulty;
+    let maxCells;
+    let maxBombs;
 
-    for (let i = 0; i < (25 * 30); i++) {
-        if (bombs.includes(i)) {
-            gameWindowList = gameWindowList + '<li class="cell" data-pos="' + (i) +'" data-bomb="1"><img class="bomb" src="img/mine.png" alt=""><div class="cover"></div></li>';
-        }else{
-            gameWindowList = gameWindowList + '<li class="cell" data-pos="' + (i) +'"><div class="cover"></div></li>';
-        }
+    switch (selectedMode.text()) {
+        case 'Easy':
+            difficulty = 1;
+            maxCells = 450;
+            maxBombs = 45;
+            break;
+        case 'Normal':
+            difficulty = 2;
+            maxCells = 600;
+            maxBombs = 90;
+            break;
+        default:
+            difficulty = 3;
+            maxCells = 750;
+            maxBombs = 150;
+            break;
     }
-    gameWindow.html(gameWindowList);
+
+    modeWindow.addClass('hide');
+    setTimeout(function () {
+        modeWindow.removeClass('hide');
+    }, 100);
+
+    return [difficulty, maxCells, maxBombs];
 }
 
 // Funzione creatore bombe
-function bombCreator(){
+function bombCreator(maxCells, maxBombs){
     let min = 1;
-    let max = 749 - min + 1;
+    let max = maxCells - min + 1;
     let rndBombs = [];
 
     let i = 0;
-    while(i< 100) {
+    while(i < maxBombs) {
         let rnd = Math.floor(Math.random ()* max) + min;
         if (rndBombs.includes(rnd) == false) {
             rndBombs[i] = rnd;
@@ -30,25 +49,40 @@ function bombCreator(){
     rndBombs.sort(function(a, b){return a-b});
     console.log('Bombs: ');
     console.log(rndBombs);
-    
+
     return rndBombs;
 }
 
+// Funzione creatore celle e layer
+function cellCreator(bombs, maxCells){
+    let gameWindow = $('#matrix');
+    let gameWindowList = '';
+
+    for (let i = 0; i < maxCells; i++) {
+        if (bombs.includes(i)) {
+            gameWindowList = gameWindowList + '<li class="cell" data-pos="' + (i) +'" data-bomb="1"><img class="bomb" src="img/mine.png" alt=""><div class="cover"></div></li>';
+        }else{
+            gameWindowList = gameWindowList + '<li class="cell" data-pos="' + (i) +'"><div class="cover"></div></li>';
+        }
+    }
+    gameWindow.html(gameWindowList);
+}
+
 // Funzione calcolo bombe vicine
-function nearBomb(bombs) {
-    // Ciclo le 100 bombe che conosco già
+function nearBomb(bombs, maxCells, maxBombs) {
+    // Ciclo le X bombe che conosco già
     // E richiamo il contatore bombe vicine passando la posizione
     // della bomba come parametro
     let posNum = -1;
-    for (let j = 0; j <100; j++) {
+    for (let j = 0; j < maxBombs; j++) {
         let bomb = $(bombs[j]);
         posNum = bomb[0];
-        bombCount(posNum);
+        bombCount(posNum, maxCells);
     }
 }
 
 // Funzione inserimento num bombe vicine
-function bombCount(posNum) {
+function bombCount(posNum, maxCells) {
     let cellList = $('.cell');
     posNum -= 31;
 
@@ -58,7 +92,7 @@ function bombCount(posNum) {
             let liSpan = cellLi.children('span');
             
             // Verifico se posNum è nel range consentito
-            if(posNum >= 0 && posNum <= 749) {
+            if(posNum >= 0 && posNum <= (maxCells -1)) {
                 let pos2 = posNum + 1;
                 //Se mi trovo in ultima cell SX
                 if ((pos2 % 30 == 0) && j == 1) {
@@ -137,7 +171,7 @@ function clikcedCell(bombs){
     });
 }
 
-function isClick(bombs, cell, event) {
+function isClick(bombs, cell) {
     cell.children('.cover').remove();
     let isWin = wildfireDiscover(cell, bombs);
     return winLose(isWin);
@@ -388,7 +422,6 @@ function flag() {
 
         // Se corrisponde e non ha una bandiera, la metto
         if (event.which == 3 && cell.find('.bandiera').length < 1) {
-            console.log(cell);
             cell.children('.cover').append('<img class="bandiera" src="img/flag.png" alt="Bandiera">');
         }
         // Altrimenti la tolgo
@@ -427,13 +460,16 @@ function timer() {
         centinaia.text(0).removeClass('active');
     }
 
-    // Concateno la stessa funzione fino a 998
-    if (cont < 999) {
+    // Concateno la stessa funzione fino a 600
+    if (cont < 601) {
         timerVar = setTimeout(timer, 1000);
     }
-    // A 999 l'utente ha perso
+    // A 600 l'utente ha perso
     else{
         cont = 0;
+        $('#smile').hide();
+        $('#dead').show();
+
         $('.cell').off('click');
         $('.cell').off('mousedown');
     }
@@ -443,8 +479,19 @@ function timer() {
 // Funzione principale
 function minesweeper(){
 
+    // 
+    let gameMode;
+    $('.modeWindow > li').click(function () {
+        gameMode = setDifficulty($(this));
+    });
+
     // Click su bottone start (smile)
     $('#btnStart').click(function () {
+        // Difficoltà default è Hard, se non ne viene scelta un'altra
+        if (!gameMode) {
+            gameMode = [3, 750, 150];
+        }
+        let [difficulty, maxCells, maxBombs] = gameMode;
 
         // Azzero il punteggio
         $('#point > .unita').text(0).removeClass('active');
@@ -463,12 +510,13 @@ function minesweeper(){
         cont = 0;
 
         // Creo le bombe
-        let bombs = bombCreator();
+        let bombs = bombCreator(maxCells, maxBombs);
+
         // Creo le celle
-        cellCreator(bombs);
+        cellCreator(bombs, maxCells);
 
         // Bomba vicine
-        nearBomb(bombs);
+        nearBomb(bombs, maxCells, maxBombs);
 
         // Ascolto click destro per flags
         flag();
