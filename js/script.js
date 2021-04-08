@@ -34,7 +34,7 @@ function setDifficulty(selectedMode) {
 
 // Funzione creatore bombe
 function bombCreator(maxCells, maxBombs){
-    let min = 1;
+    let min = 0;
     maxCells = maxCells - 1;
     let max = maxCells - min + 1;
     let rndBombs = [];
@@ -84,6 +84,9 @@ function nearBomb(bombs, maxCells, maxBombs) {
 
 // Funzione inserimento num bombe vicine
 function bombCount(posNum, maxCells) {
+    if (posNum == undefined) {
+        posNum = 0;
+    }
     let cellList = $('.cell');
     posNum -= 31;
     for (let i = 0; i < 3; i++) {
@@ -159,13 +162,6 @@ function bombCount(posNum, maxCells) {
                             liSpan.addClass('grey');
                             liSpan.text(num);
                             break;    
-                        // default:
-                        //     if (liSpan.hasClass('red')) {
-                        //         liSpan.removeClass('red');
-                        //         liSpan.addClass('dark');
-                        //     }
-                        //     liSpan.text(num);
-                        //     break;
                     }
                 }
             }
@@ -328,7 +324,6 @@ function removeSX(cellNextSx, cell, cells) {
             
             
             if (cellNextSx.data('pos') % 30 == 0) {
-                //console.log('PRIMA CASELLA');
                 break;
             }
             cellNextSx = ($(cells[(cellNextSx.data('pos') - 1)]));
