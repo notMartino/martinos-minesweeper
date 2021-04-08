@@ -22,7 +22,6 @@ function martinos(){
     // removeAdd($(liList[130]));
     removeAdd($(liList[131]));
     // removeAdd($(liList[161]));
-    
 
     removeAdd($(liList[72]));
     removeAdd($(liList[102]));

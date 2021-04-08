@@ -25,6 +25,9 @@ a{
 .hide{
     display: none!important;
 }
+.show{
+    display: inline-block!important;
+}
 
 /* Proprietà main*/
 main{
@@ -201,6 +204,10 @@ img#logo{
     display: inline-block;
 }
 
+#btnStart #win{
+    display: none;
+}
+
 .redStartBtn{
     animation: redPulse 1s linear infinite;
 
@@ -257,9 +264,6 @@ ul#matrix{
         background-color: red;
     }
 }
-/* .cell .bomb + .cover{
-    display: none; 
-} */
 
 /* Cover sulle celle */
 #matrix .cell .cover{
@@ -293,7 +297,19 @@ ul#matrix{
     color: red;
 }
 .dark{
-    color:fuchsia;
+    color: #010080;
+}
+.darkred{
+    color: #810102
+}
+.lightgreen{
+    color: #008081;
+}
+.black{
+    color: black;
+}
+.grey{
+    color: #808080;
 }
 
 /* Punti */

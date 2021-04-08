@@ -35,6 +35,7 @@ function setDifficulty(selectedMode) {
 // Funzione creatore bombe
 function bombCreator(maxCells, maxBombs){
     let min = 1;
+    maxCells = maxCells - 1;
     let max = maxCells - min + 1;
     let rndBombs = [];
 
@@ -85,7 +86,6 @@ function nearBomb(bombs, maxCells, maxBombs) {
 function bombCount(posNum, maxCells) {
     let cellList = $('.cell');
     posNum -= 31;
-
     for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
             let cellLi = $(cellList[posNum]);
@@ -94,12 +94,12 @@ function bombCount(posNum, maxCells) {
             // Verifico se posNum è nel range consentito
             if(posNum >= 0 && posNum <= (maxCells -1)) {
                 let pos2 = posNum + 1;
-                //Se mi trovo in ultima cell SX
+                //Se mi trovo in ultima cell DX
                 if ((pos2 % 30 == 0) && j == 1) {
                     j = 3;
                     posNum++;
                 } 
-                // Se invece mi trovo in prima cell DX
+                // Se invece mi trovo in prima cell SX
                 else if ((pos2 % 30 == 0) && j == 0) {
                     posNum++;
                     continue;
@@ -133,14 +133,39 @@ function bombCount(posNum, maxCells) {
                             liSpan.removeClass('green');
                             liSpan.addClass('red');
                             liSpan.text(num);
-                        break;
-                        default:
-                            if (liSpan.hasClass('red')) {
-                                liSpan.removeClass('red');
-                                liSpan.addClass('dark');
-                            }
+                            break;
+                        case 4:
+                            liSpan.removeClass('red');
+                            liSpan.addClass('dark');
                             liSpan.text(num);
                             break;
+                        case 5:
+                            liSpan.removeClass('dark');
+                            liSpan.addClass('darkred');
+                            liSpan.text(num);
+                            break;
+                        case 6:
+                            liSpan.removeClass('darkred');
+                            liSpan.addClass('lightgreen');
+                            liSpan.text(num);
+                            break;
+                        case 7:
+                            liSpan.removeClass('lightgreen');
+                            liSpan.addClass('black');
+                            liSpan.text(num);
+                            break;
+                        case 8:
+                            liSpan.removeClass('black');
+                            liSpan.addClass('grey');
+                            liSpan.text(num);
+                            break;    
+                        // default:
+                        //     if (liSpan.hasClass('red')) {
+                        //         liSpan.removeClass('red');
+                        //         liSpan.addClass('dark');
+                        //     }
+                        //     liSpan.text(num);
+                        //     break;
                     }
                 }
             }
@@ -155,26 +180,43 @@ function bombCount(posNum, maxCells) {
 // Funzione rimozione cover al click
 function clikcedCell(bombs){
     let cells = $('.cell');
-
-    cells.click(function (event) {
-        let cell = $(this);
-        let isWin = isClick(bombs, cell);
-        if (isWin == false) {
-            console.log('BOOOM! Hai perso!');
-            cells.off('click');
-            $('#smile').hide();
-            $('#dead').show();
-            clearTimeout(timerVar);
+    let isLose;
+    let isWin;
+    cells.click(function () {
+        // Parte il timer
+        if (cont == 0) {
+            timer();
         }
 
-        pointsCounter();
-    });
-}
+        let cell = $(this);
+        // let isWin = isClick(bombs, cell);
+        cell.children('.cover').remove();
+        isLose = wildfireDiscover(cell, bombs);
+        
+        // Conto i punti ad ogni click
+        isWin = pointsCounter(bombs);
 
-function isClick(bombs, cell) {
-    cell.children('.cover').remove();
-    let isWin = wildfireDiscover(cell, bombs);
-    return winLose(isWin);
+        if (isLose == true) {
+            console.log('BOOOM! You Lose!');
+            cells.off('click');
+            cells.off('mousedown');
+
+            $('#smile').addClass('hide');
+            $('#dead').addClass('show');
+            clearTimeout(timerVar);
+        }
+        else if (isWin == true) {
+            console.log('Perfect! You Win!');
+            cells.off('click');
+            cells.off('mousedown');
+
+            $('#smile').addClass('hide');
+            $('#dead').removeClass('show');
+            $('#dead').addClass('hide');
+            $('#win').addClass('show');
+            clearTimeout(timerVar);
+        } 
+    });
 }
 
 // Funzione rimozione cover a macchia d'olio
@@ -190,8 +232,8 @@ function wildfireDiscover(cell, bombs) {
             $(cells[bombCell]).children('.cover').remove();
         }
 
-        let isWin = false;
-        return isWin;
+        let isFalse = true;
+        return isFalse;
     }
     
     // Se viene cliccata una cella vuota
@@ -262,7 +304,7 @@ function removeSX(cellNextSx, cell, cells) {
             break;
         }
         if ((cellNextSx.data('pos') + 1) % 30 == 0) {
-            console.log('PRIMA CASELLA');
+            // console.log('PRIMA CASELLA');
             break;
         }
 
@@ -286,7 +328,7 @@ function removeSX(cellNextSx, cell, cells) {
             
             
             if (cellNextSx.data('pos') % 30 == 0) {
-                console.log('PRIMA CASELLA');
+                //console.log('PRIMA CASELLA');
                 break;
             }
             cellNextSx = ($(cells[(cellNextSx.data('pos') - 1)]));
@@ -356,79 +398,152 @@ function removeDOWN(cellNextDown, cell, cells) {
     }
 }
 
-// Funzione calcolo punteggio
-function pointsCounter(){
+// Funzione calcolo punteggio/calcolo bombe
+function pointsCounter(bombs){
     let cellList = $('#matrix').children();
     let points = 0;
+    let isWin;
 
     // Controllo ogni cella senza cover e conto
     for (let i = 0; i < cellList.length; i++) {
         const element = $(cellList[i]);
         if (element.children('.cover').length == 0) {
             points++;
+            // Tolgo l'ultimo punto se tocco una bomba
             if (element.children('.bomb').length > 0) {
                 points --;
             }
         }
     }
 
-    let pointUnita = $('#point').children('.unita');
-    let pointDecina = $('#point').children('.decina');
-    let pointCentinaia = $('#point').children('.centinaia');
-
-    // Trasformo i punti in stringa
-    points = points.toString();
-    // Inserisco la cifra delle unità nelle unità
-    if (points.charAt(points.lenght - 1 )) {
-        pointUnita.text(points.charAt(points.length - 1));
-        pointUnita.addClass('active');
-        $('#point').children('.overlay').show();
-    }
-
-    // Inserisco la cifra delle decine nelle decine
-    if (points.charAt(points.length - 2)) {
-        pointDecina.text(points.charAt(points.length - 2));
-        pointDecina.addClass('active');
-    }
-
-    // Inserisco la cifra delle centinaia nelle centinaia
-    if (points.charAt(points.length - 3)) {
-        pointCentinaia.text(points.charAt(points.length - 3));
-        pointCentinaia.addClass('active');
-    }
-
-    console.log('Totale: ' + points);
-}
-
-// Funzione winLose
-function winLose(isWin){
-    if (isWin == false) {
+    if (points == (cellList.length - bombs.length)) {
+        console.log('opppaa');
+        isWin = true;
         return isWin;
     }
+
+    // EX Display contatore punti 
+
+    // let pointUnita = $('#point').children('.unita');
+    // let pointDecina = $('#point').children('.decina');
+    // let pointCentinaia = $('#point').children('.centinaia');
+
+    // // Trasformo i punti in stringa
+    // points = points.toString();
+    // // Inserisco la cifra delle unità nelle unità
+    // if (points.charAt(points.lenght - 1 )) {
+    //     pointUnita.text(points.charAt(points.length - 1));
+    //     pointUnita.addClass('active');
+    //     $('#point').children('.overlay').show();
+    // }
+
+    // // Inserisco la cifra delle decine nelle decine
+    // if (points.charAt(points.length - 2)) {
+    //     pointDecina.text(points.charAt(points.length - 2));
+    //     pointDecina.addClass('active');
+    // }
+
+    // // Inserisco la cifra delle centinaia nelle centinaia
+    // if (points.charAt(points.length - 3)) {
+    //     pointCentinaia.text(points.charAt(points.length - 3));
+    //     pointCentinaia.addClass('active');
+    // }
+
+    // console.log('Totale: ' + points);
 }
 
-// Funzione flag a click destro
-function flag() {
-    const cells = $('.cell');
+// // Funzione winLose
+// function winLose(isWin){
+//     if (isWin == false) {
+//         return isWin;
+//     }
+// }
 
+// Funzione flag a click destro
+function flag(maxBombs) {
+    const cells = $('.cell');
+    
+    
     // Ascolto se è stato premuto il tasto destro su cover
     cells.mousedown(function (event) {
+        if (cont == 0) {
+            timer();
+        }
+        
         // Rimuovo il menu ispeziona
         cells.bind("contextmenu",function(e){
             return false;
         }); 
-        console.log(event.which);
+        // console.log(event.which);
         const cell = $(this)
-
+        
         // Se corrisponde e non ha una bandiera, la metto
-        if (event.which == 3 && cell.find('.bandiera').length < 1) {
+        if (event.which == 3 && cell.find('.bandiera').length < 1 && cell.children('.cover').length > 0) {
             cell.children('.cover').append('<img class="bandiera" src="img/flag.png" alt="Bandiera">');
+            // flagNum ++;
         }
         // Altrimenti la tolgo
-        else if (event.which == 3){
+        else if (event.which == 3 && cell.children('.cover').length > 0){
+            // flagNum --;
             cell.children('.cover').empty();
         }
+        
+        // Contatore bandiere
+        flagCounter(cells, maxBombs);
     });
+}
+
+// Contatore bandiere
+function flagCounter(cells, maxBombs) {
+    let flagNum = 0;
+    
+    for (let i = 0; i < cells.length; i++) {
+        const element = $(cells[i]).children('.cover');
+        if (element.children('.bandiera').length > 0) {
+            flagNum++;
+        }
+    }
+    
+    let bombs = maxBombs - flagNum;
+    
+    let pointUnita = $('#point').children('.unita');
+    let pointDecina = $('#point').children('.decina');
+    let pointCentinaia = $('#point').children('.centinaia');
+    
+    // Trasformo le bombe in stringa
+    bombs = bombs.toString();
+
+    // Se ci sono più bandiere che bombe allora Error
+    if (bombs < 0) {
+        pointUnita.text('R').addClass('active');
+        pointDecina.text('R').addClass('active');
+        pointCentinaia.text('E').addClass('active');
+    }
+    // Altrimenti
+    else{
+        pointUnita.text('0').removeClass('active');
+        pointDecina.text('0').removeClass('active');
+        pointCentinaia.text('0').removeClass('active');
+
+        // Inserisco la cifra delle unità nelle unità
+        if (bombs.charAt(bombs.lenght - 1 )) {
+            pointUnita.text(bombs.charAt(bombs.length - 1));
+            pointUnita.addClass('active');
+            $('#point').children('.overlay').show();
+        }
+        
+        // Inserisco la cifra delle decine nelle decine
+        if (bombs.charAt(bombs.length - 2)) {
+            pointDecina.text(bombs.charAt(bombs.length - 2));
+            pointDecina.addClass('active');
+        }
+        
+        // Inserisco la cifra delle centinaia nelle centinaia
+        if (bombs.charAt(bombs.length - 3)) {
+            pointCentinaia.text(bombs.charAt(bombs.length - 3));
+            pointCentinaia.addClass('active');
+        }
+    }
 }
 
 // Timer partita
@@ -467,8 +582,8 @@ function timer() {
     // A 600 l'utente ha perso
     else{
         cont = 0;
-        $('#smile').hide();
-        $('#dead').show();
+        $('#smile').addClass('hide');
+        $('#dead').addClass('show');
 
         $('.cell').off('click');
         $('.cell').off('mousedown');
@@ -478,8 +593,6 @@ function timer() {
 // -----------------------------------------------
 // Funzione principale
 function minesweeper(){
-
-    // 
     let gameMode;
     $('.modeWindow > li').click(function () {
         gameMode = setDifficulty($(this));
@@ -498,15 +611,22 @@ function minesweeper(){
         $('#point > .decina').text(0).removeClass('active');
         $('#point > .centinaia').text(0).removeClass('active');
 
+        // Azzero il timer
+        $('#time > .unita').text(0).removeClass('active');
+        $('#time > .decina').text(0).removeClass('active');
+        $('#time > .centinaia').text(0).removeClass('active');
+
         // Rimetto la faccina smile
-        $('#dead').hide();
-        $('#smile').show();
+        $('#dead').removeClass('show');
+        $('#dead').removeClass('hide');
+        $('#smile').removeClass('hide');
+        $('#win').removeClass('show');
         $('#btnStart').removeClass('redStartBtn');
 
-        // Parte il timer
+        // // Parte il timer
         clearTimeout(timerVar);
         cont--;
-        timer();
+        // timer();
         cont = 0;
 
         // Creo le bombe
@@ -519,8 +639,8 @@ function minesweeper(){
         nearBomb(bombs, maxCells, maxBombs);
 
         // Ascolto click destro per flags
-        flag();
-
+        flag(maxBombs);
+        
         // Rimuovo cover al click
         clikcedCell(bombs);
     });
