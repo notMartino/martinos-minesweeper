@@ -290,8 +290,45 @@ function removeDX(cellNextDx, cell, cells) {
         }
     }
 }
-
 // Funzione rimozione covers SX
+// function removeSX(cellNextSx, cell, cells) {
+//     let contSX = true;
+//     while (contSX == true){
+
+//         if (cell.data('pos') % 30 == 0) {
+//             break;
+//         }
+//         if ((cellNextSx.data('pos') + 1) % 30 == 0) {
+//             // console.log('PRIMA CASELLA');
+//             break;
+//         }
+
+//         if (cellNextSx.children('span').length > 0) {
+//             contSX = false;
+//             cellNextSx.children('.cover').remove();
+//         }
+//         else if(cellNextSx.children('.cover').length < 1){
+//             break;
+//         } 
+//         else {
+//             let position = cellNextSx.data('pos');
+            
+//             cellNextSx.children('.cover').remove();
+            
+//             let cellNextUp = ($(cells[(position -30)]));
+//             removeUP(cellNextUp, cell, cells);
+            
+//             let cellNextDown = ($(cells[(position + 30)]));
+//             removeDOWN(cellNextDown, cell, cells);
+            
+            
+//             if (cellNextSx.data('pos') % 30 == 0) {
+//                 break;
+//             }
+//             cellNextSx = ($(cells[(cellNextSx.data('pos') - 1)]));
+//         }
+//     }
+// }
 function removeSX(cellNextSx, cell, cells) {
     let contSX = true;
     while (contSX == true){
@@ -300,7 +337,6 @@ function removeSX(cellNextSx, cell, cells) {
             break;
         }
         if ((cellNextSx.data('pos') + 1) % 30 == 0) {
-            // console.log('PRIMA CASELLA');
             break;
         }
 
@@ -314,7 +350,10 @@ function removeSX(cellNextSx, cell, cells) {
         else {
             let position = cellNextSx.data('pos');
             
+            
+            // Richiamo SX
             cellNextSx.children('.cover').remove();
+            removeSX(cellNextSx, cell, cells);
             
             let cellNextUp = ($(cells[(position -30)]));
             removeUP(cellNextUp, cell, cells);
@@ -330,6 +369,7 @@ function removeSX(cellNextSx, cell, cells) {
         }
     }
 }
+
 
 // Funzione rimozione covers UP
 function removeUP(cellNextUp, cell, cells) {
