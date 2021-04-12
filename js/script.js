@@ -76,17 +76,13 @@ function nearBomb(bombs, maxCells, maxBombs) {
     // della bomba come parametro
     let posNum = -1;
     for (let j = 0; j < maxBombs; j++) {
-        let bomb = $(bombs[j]);
-        posNum = bomb[0];
+        posNum = bombs[j];
         bombCount(posNum, maxCells);
     }
 }
 
 // Funzione inserimento num bombe vicine
 function bombCount(posNum, maxCells) {
-    if (posNum == undefined) {
-        posNum = 0;
-    }
     let cellList = $('.cell');
     posNum -= 31;
     for (let i = 0; i < 3; i++) {
@@ -183,7 +179,9 @@ function clikcedCell(bombs){
         if (cont == 0) {
             timer();
         }
-
+        // $('#smile').addClass('hide');
+        // $('#scared').addClass('show');
+        
         let cell = $(this);
         // let isWin = isClick(bombs, cell);
         cell.children('.cover').remove();
@@ -191,12 +189,12 @@ function clikcedCell(bombs){
         
         // Conto i punti ad ogni click
         isWin = pointsCounter(bombs);
-
+        
         if (isLose == true) {
             console.log('BOOOM! You Lose!');
             cells.off('click');
             cells.off('mousedown');
-
+            
             $('#smile').addClass('hide');
             $('#dead').addClass('show');
             clearTimeout(timerVar);
@@ -205,13 +203,20 @@ function clikcedCell(bombs){
             console.log('Perfect! You Win!');
             cells.off('click');
             cells.off('mousedown');
-
+            
             $('#smile').addClass('hide');
             $('#dead').removeClass('show');
             $('#dead').addClass('hide');
             $('#win').addClass('show');
             clearTimeout(timerVar);
-        } 
+        } else{
+            $('#smile').addClass('hide');
+            $('#scared').addClass('show');
+            setTimeout(function () {
+                $('#smile').removeClass('hide');
+                $('#scared').removeClass('show');
+            }, 400);
+        }
     });
 }
 
@@ -456,48 +461,11 @@ function pointsCounter(bombs){
         isWin = true;
         return isWin;
     }
-
-    // EX Display contatore punti 
-
-    // let pointUnita = $('#point').children('.unita');
-    // let pointDecina = $('#point').children('.decina');
-    // let pointCentinaia = $('#point').children('.centinaia');
-
-    // // Trasformo i punti in stringa
-    // points = points.toString();
-    // // Inserisco la cifra delle unità nelle unità
-    // if (points.charAt(points.lenght - 1 )) {
-    //     pointUnita.text(points.charAt(points.length - 1));
-    //     pointUnita.addClass('active');
-    //     $('#point').children('.overlay').show();
-    // }
-
-    // // Inserisco la cifra delle decine nelle decine
-    // if (points.charAt(points.length - 2)) {
-    //     pointDecina.text(points.charAt(points.length - 2));
-    //     pointDecina.addClass('active');
-    // }
-
-    // // Inserisco la cifra delle centinaia nelle centinaia
-    // if (points.charAt(points.length - 3)) {
-    //     pointCentinaia.text(points.charAt(points.length - 3));
-    //     pointCentinaia.addClass('active');
-    // }
-
-    // console.log('Totale: ' + points);
 }
-
-// // Funzione winLose
-// function winLose(isWin){
-//     if (isWin == false) {
-//         return isWin;
-//     }
-// }
 
 // Funzione flag a click destro
 function flag(maxBombs) {
     const cells = $('.cell');
-    
     
     // Ascolto se è stato premuto il tasto destro su cover
     cells.mousedown(function (event) {

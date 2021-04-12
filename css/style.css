@@ -33,7 +33,7 @@ a{
 main{
     display: flex;
     height: calc(100vh - 45px);
-    overflow-x: hidden;
+    overflow-x: auto;
     overflow-y: auto;
 }
 /* Logo Windows XP */
@@ -47,18 +47,20 @@ img#logo{
 
 /* Sezione game */
 #game{
+    width: 705px;
     font-family: 'Exo', sans-serif;
     background-color: white;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     border-top-width: 0;
     margin: auto;
-    overflow: hidden;
+    overflow: auto;
 }
 /* Barra nav finestra */
 .window-nav{
     /* font-family: 'Mukta', sans-serif; */
     height: 30px;
+    width: 705px;
     color: white;
     background: linear-gradient(to bottom, #3168d5 2%, #3888e9 4%, #4993e6 6%, #307be5 8%, #286add 5%, #245dd7 10%, #245edc 100%);
     padding: 0 8px;
@@ -92,6 +94,7 @@ img#logo{
 .window-body{
     border: 3px solid #245edc;
     border-top-width: 0;
+    width: 705px;
 }
 
 /* Sezione opzione finestra */
@@ -183,41 +186,35 @@ img#logo{
     border-bottom: 3px solid #80807e;
     padding: 2px;
     box-shadow: -1px -1px 0 0 rgb(148, 147, 147);
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
 }
 #btnStart:hover{
-    border: 2px solid white;
-    border-top: 2px solid #80807e;
-    border-left: 2px solid #80807e;
+    border: 3px solid white;
+    border-top: 3px solid #80807e;
+    border-left: 3px solid #80807e;
     opacity: 0.8;
 }
 #btnStart img{
     width: 30px;
+    height: 30px;
     vertical-align: middle;
 }
-#btnStart:hover #smile{
+#btnStart:hover #smile, #btnStart #dead, #btnStart #scared, #btnStart #win{
     display: none;
 }
-#btnStart #dead{
-    display: none;
-}
+
 #btnStart:hover #dead{
     display: inline-block;
 }
 
-#btnStart #win{
-    display: none;
-}
-
 .redStartBtn{
     animation: redPulse 1s linear infinite;
-
 }
 @keyframes redPulse {
-    0%{
-        border-width: 2px;
-    }
     50%{
-        border: 4px solid red;
+        border: 3px solid red;
     }
     100%{
         border: 3px solid white;
@@ -249,7 +246,9 @@ ul#matrix{
     text-align: center;
 }
 .cell .bomb{
-    width: 100%;
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
 }
 .cell#active {
     background-color: red;
