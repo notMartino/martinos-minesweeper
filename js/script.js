@@ -68,7 +68,7 @@ function cellCreator(bombs, maxCells){
     }
     gameWindow.html(gameWindowList);
 }
-
+///////////////////////////////////////////////
 // Funzione calcolo bombe vicine
 function nearBomb(bombs, maxCells, maxBombs) {
     // Ciclo le X bombe che conosco già
@@ -174,13 +174,13 @@ function clikcedCell(bombs){
     let cells = $('.cell');
     let isLose;
     let isWin;
-    let clickCount = 0;
-
     cells.click(function () {
         // Parte il timer
         if (cont == 0) {
             timer();
         }
+        // $('#smile').addClass('hide');
+        // $('#scared').addClass('show');
         
         let cell = $(this);
         // let isWin = isClick(bombs, cell);
@@ -253,6 +253,7 @@ function wildfireDiscover(cell, bombs) {
 
         let cellNextDown = ($(cells[(position +30)]));
         removeDOWN(cellNextDown, cell, cells);
+        
     }
 }
 
@@ -354,6 +355,7 @@ function removeSX(cellNextSx, cell, cells) {
         else {
             let position = cellNextSx.data('pos');
             
+            
             // Richiamo SX
             cellNextSx.children('.cover').remove();
             removeSX(cellNextSx, cell, cells);
@@ -363,6 +365,7 @@ function removeSX(cellNextSx, cell, cells) {
             
             let cellNextDown = ($(cells[(position + 30)]));
             removeDOWN(cellNextDown, cell, cells);
+            
             
             if (cellNextSx.data('pos') % 30 == 0) {
                 break;
