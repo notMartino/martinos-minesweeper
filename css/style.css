@@ -199,7 +199,7 @@ img#logo{
 #btnStart img{
     width: 30px;
     height: 30px;
-    vertical-align: middle;
+    margin-bottom: 2px;
 }
 #btnStart:hover #smile, #btnStart #dead, #btnStart #scared, #btnStart #win{
     display: none;
@@ -250,11 +250,12 @@ ul#matrix{
     height: 18px;
     margin-top: 1px;
 }
+
+/* Effetto rosso pingato su cella bomba*/
 .cell#active {
     background-color: red;
     animation: redping infinite linear 1s;
 }
-
 @keyframes redping{
     30%{
         background-color: rgba(255, 0, 0, 0.2);
@@ -262,6 +263,32 @@ ul#matrix{
     60%{
         background-color: red;
     }
+}
+/* Effetto arcobaleno su cella bomba*/
+.cell#active2 {
+    background-color: red;
+    animation: wave infinite linear 2s;
+}
+@keyframes wave{
+    14.28%{
+        background-color: orange;
+    }
+    28.57%{
+        background-color: yellow;
+    }
+    42.85%{
+        background-color: greenyellow;
+    }
+    71.42%{
+        background-color: dodgerblue;
+    }
+    85.71%{
+        background-color: blue;
+    }
+    100%{
+        background-color: purple;
+    }
+
 }
 
 /* Cover sulle celle */

@@ -27,7 +27,7 @@ function martinos(){
     removeAdd($(liList[102]));
     removeAdd($(liList[132]));
     removeAdd($(liList[162]));
-    // removeAdd($(liList[192]));
+    // // removeAdd($(liList[192]));
 
     // Lettera O
     removeAdd($(liList[74]));
@@ -40,9 +40,9 @@ function martinos(){
     removeAdd($(liList[76]));
     removeAdd($(liList[106]));
     removeAdd($(liList[136]));
+    removeAdd($(liList[165]));
     removeAdd($(liList[166]));
     
-    removeAdd($(liList[165]));
 
     // Lettera T
     removeAdd($(liList[78]));
@@ -58,7 +58,7 @@ function martinos(){
     removeAdd($(liList[271]));
     removeAdd($(liList[301]));
     removeAdd($(liList[331]));
-    removeAdd($(liList[361]));
+    // removeAdd($(liList[361]));
 
     removeAdd($(liList[272]));
     removeAdd($(liList[303]));
@@ -68,7 +68,7 @@ function martinos(){
     removeAdd($(liList[275]));
     removeAdd($(liList[305]));
     removeAdd($(liList[335]));
-    removeAdd($(liList[365]));
+    // removeAdd($(liList[365]));
 
     // Lettera A
     removeAdd($(liList[247]));
@@ -130,14 +130,60 @@ function martinos(){
     removeAdd($(liList[268]));
     removeAdd($(liList[298]));
     removeAdd($(liList[328]));
-    removeAdd($(liList[358]));
     removeAdd($(liList[357]));
+    removeAdd($(liList[358]));
 }
 
+// Funzione di richiamo rimozione/aggiunta cover
 function removeAdd(element) {
-    element.empty();
-    element.attr('id', 'active');
-    element.append('<img class="bomb" src="img/mine.png" alt="">');
+    // Lista di LI celle
+    let newGameWindow = $('#matrix');
+    let newLiList = newGameWindow.children();
+
+    // Pos è la posizione originale di destinazione
+    let pos = element.data('pos');
+
+    // Pos0 è la posizione di partenza sulla riga corretta
+    let pos0 = parseInt(pos / 30);
+    pos0 = pos0 * 30;
+    let elem2 = $(newLiList[pos0]);
+
+    // Richiamo le funzioni di scopertura/copertura celle
+    redCell(elem2, pos, pos0, newLiList);
+    whiteCell(elem2, pos, pos0, newLiList);
+}
+
+// Funzione rimozione cover con effetto
+function redCell(elem2, pos, pos0, newLiList){
+    setTimeout(()=>{
+        elem2.empty();
+        elem2.attr('id', 'active2');
+        elem2.append('<img class="bomb" src="img/mine.png" alt="">');
+        if (pos0 < pos) {
+            pos0++;
+            elem2 = $(newLiList[pos0]);
+            redCell(elem2, pos, pos0, newLiList);
+        }
+    },40);
+}    
+
+// Funzione di aggiunta cover
+function whiteCell(elem2, pos, pos0, newLiList){
+    setTimeout(()=>{
+        if (pos0 < pos) {
+            pos0++;
+            if (elem2.data('show') != '1') {
+                elem2.html('');
+                elem2.html('<div class="cover"></div>');
+                elem2.attr('id', '');
+            }
+            elem2 = $(newLiList[pos0]);
+            whiteCell(elem2, pos, pos0, newLiList);
+        }else{
+            elem2.attr('data-show', '1');
+            console.log(elem2, elem2.data('show'));
+        } 
+    },50);
 }
 
 $(martinos);
