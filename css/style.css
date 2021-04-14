@@ -35,6 +35,9 @@ main{
     height: calc(100vh - 45px);
     overflow-x: auto;
     overflow-y: auto;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
 }
 /* Logo Windows XP */
 img#logo{
@@ -45,20 +48,86 @@ img#logo{
     z-index: -1;
 }
 
+/* Contenitore Icons XP apps */
+main #xp-icons{
+    width: 100%;
+    padding: 20px;
+    user-select: none;
+    font-family: 'Rubik', sans-serif;
+}
+
+/* Contenitore icon e nome App */
+#xp-icons .icon-container{
+    display: inline-block;
+    width: 70px;
+    text-align: center;
+    vertical-align: top;
+    cursor: pointer;
+}
+.icon-container.active img, .icon-container.active .white-link{
+    background-color: dodgerblue;
+    opacity: 0.8;
+}
+
+.icon-container img{
+    height: 50px;
+}
+.icon-container .white-link{
+    max-width: 60px;
+    margin: 0 auto;
+    color: white;
+    text-shadow:0 3px 3px black;
+    word-wrap: break-word;
+    font-size: 14px;
+    font-weight: 300;
+}
+
 /* Sezione game */
 #game{
     width: 705px;
+    height: 684px;
+    margin-bottom: 20px; 
     font-family: 'Exo', sans-serif;
-    background-color: white;
+    background-color: transparent;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     border-top-width: 0;
-    margin: auto;
-    overflow: auto;
+    overflow-x: auto;
+    transition: height linear 0.1s, width linear 0.1s, opacity 0.4s;
 }
+
+#game.close{
+    overflow: hidden;
+    position: absolute;
+    /* opacity: 0; */
+    bottom: -8px;
+    left: 100px;
+    height: 30px;
+    width: 150px;
+    cursor: pointer;
+    user-select: none;
+    /* animation: close-this linear 1s; */
+}
+
+/* @keyframes close-this {
+    0%{
+        position: absolute;
+    }
+    99%{
+        opacity: 1;
+    }
+    100%{
+        bottom: -10px;
+        left: 100px;
+        height: 30px;
+        width: 150px;
+        opacity: 0;
+        /* overflow: hidden; */
+    /* }
+}  */
+
 /* Barra nav finestra */
 .window-nav{
-    /* font-family: 'Mukta', sans-serif; */
     height: 30px;
     width: 705px;
     color: white;

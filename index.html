@@ -14,15 +14,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Exo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Cute+Font&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- JQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
+    <script src="js/xpscript.js"></script>
     <script src="js/initgame.js"></script>
     <script src="js/script.js"></script>
     <link rel="stylesheet" href="css/style.css">
@@ -31,6 +30,18 @@
     <main>
         <!-- Logo Windows XP -->
         <img src="img/xp-logo.png" id="logo" alt="Windows XP Logo">
+
+        <!-- Icone Apps XP -->
+        <div id="xp-icons">
+            <div class="icon-container">
+                <img src="img/ie.png" id="ie" alt="Inerntet Explorer">
+                <div class="white-link">Internet Explorer</div>
+            </div>
+            <div class="icon-container">
+                <img src="img/bin.png" id="bin" alt="Recycle bin">
+                <div class="white-link">Recycle Bin</div>
+            </div>
+        </div>
 
         <!-- Minesweeper game -->
         <section id="game">
@@ -44,7 +55,7 @@
                 <div>
                     <img src="img/minimizebutton.jpg" class="minimizeBtn" alt="Bottone minimize">
                     <img src="img/fscreenbutton.jpg" alt="Bottone schermo intero">
-                    <img src="img/xbutton.jpg" alt="Bottone Chiudi">
+                    <img src="img/xbutton.jpg" class="closeBtn" alt="Bottone Chiudi">
                 </div>
             </div>
 

@@ -181,7 +181,6 @@ function whiteCell(elem2, pos, pos0, newLiList){
             whiteCell(elem2, pos, pos0, newLiList);
         }else{
             elem2.attr('data-show', '1');
-            console.log(elem2, elem2.data('show'));
         } 
     },50);
 }
