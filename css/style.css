@@ -32,7 +32,7 @@ a{
 /* Proprietà main*/
 main{
     display: flex;
-    height: calc(100vh - 45px);
+    height: calc(100vh - 35px);
     overflow-x: auto;
     overflow-y: auto;
     justify-content: center;
@@ -78,7 +78,7 @@ main #xp-icons{
     color: white;
     text-shadow:0 3px 3px black;
     word-wrap: break-word;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 300;
 }
 
@@ -93,38 +93,22 @@ main #xp-icons{
     border-top-right-radius: 10px;
     border-top-width: 0;
     overflow-x: auto;
-    transition: height linear 0.1s, width linear 0.1s, opacity 0.4s;
+    position: relative;
+    bottom: 0;
+    left: 0;
+    transition: height linear 0.1s, width linear 0.1s, left 0.1s, bottom 0.1s;
 }
 
 #game.close{
     overflow: hidden;
     position: absolute;
-    /* opacity: 0; */
-    bottom: -8px;
-    left: 100px;
+    bottom: 15px;
+    left: 109px;
     height: 30px;
-    width: 150px;
+    width: 180px;
     cursor: pointer;
     user-select: none;
-    /* animation: close-this linear 1s; */
 }
-
-/* @keyframes close-this {
-    0%{
-        position: absolute;
-    }
-    99%{
-        opacity: 1;
-    }
-    100%{
-        bottom: -10px;
-        left: 100px;
-        height: 30px;
-        width: 150px;
-        opacity: 0;
-        /* overflow: hidden; */
-    /* }
-}  */
 
 /* Barra nav finestra */
 .window-nav{
@@ -430,5 +414,51 @@ ul#matrix{
 /* Footer XP */
 .footer-nav{
     background: linear-gradient(to bottom, #3168d5 2%, #3888e9 4%, #4993e6 6%, #307be5 8%, #286add 5%, #245dd7 10%, #245edc 100%);
-    height: 45px;
+    height: 35px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.footer-nav .start{
+    width: 104px;
+    height: 100%;
+    cursor: pointer;
+    margin-right: 5px;
+}
+.start img{
+    height: 100%;
+}
+.start:hover img:first-child{
+    display: none;
+}
+.start img:last-child{
+    display: none;
+}
+.start:hover img:last-child{
+    display: inline-block;
+}
+
+.footer-nav .minimized{
+    height: 28px;
+    min-width: 180px;
+    font-family: 'Rubik', sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    text-align: left;
+    color: white;
+    background-color: rgba(255, 255, 255, 0.15);   
+    display: flex;
+    align-items: center;
+    padding: 3px 10px;
+    user-select: none;
+    margin-right: 5px;
+    border-radius: 3px;
+    box-shadow: 0 0 5px -2px white inset;
+}
+
+
+.minimized img{
+    width: 25px;
+    margin-right: 5px;
 }
